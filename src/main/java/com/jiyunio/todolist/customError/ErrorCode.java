@@ -12,7 +12,7 @@ public enum ErrorCode {
     NOT_EXIST_MEMBER("404_Not_Found", "회원이 존재하지 않습니다."),
     NOT_EXIST_TODO("404_Not_Found", "TODO가 존재하지 않습니다."),
 
-    // 409 Conflict 중복된 값
+    // 409 Conflict (중복된 값)
     EXIST_USERID("409_Conflict", "이미 존재하는 아이디입니다."),
     EXIST_EMAIL("409_Conflict", "이미 존재하는 이메일입니다.");
 
