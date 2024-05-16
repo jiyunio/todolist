@@ -19,13 +19,10 @@ public class Member {
 
     private String userPw;
 
-    private String userEmail;
-
     @Builder
-    protected Member(String userId, String userPw, String userEmail) {
+    protected Member(String userId, String userPw) {
         this.userId = userId;
         this.userPw = userPw;
-        this.userEmail = userEmail;
     }
 
     protected void updateUserPw(String userPw) {

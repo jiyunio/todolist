@@ -16,11 +16,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public String signUp(@Valid SignUpDTO signUpDto) {
-        if (memberRepository.existsByUserEmail(signUpDto.getUserEmail())) {
-            // 이미 존재하는 이메일
-            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.EXIST_EMAIL);
-        }
-
         if (memberRepository.existsByUserId(signUpDto.getUserId())) {
             // 이미 존재하는 아이디
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.EXIST_USERID);
@@ -31,7 +26,6 @@ public class MemberService {
             Member member = Member.builder()
                     .userId(signUpDto.getUserId())
                     .userPw(signUpDto.getUserPw())
-                    .userEmail(signUpDto.getUserEmail())
                     .build();
             memberRepository.save(member);
             return member.getUserId();
