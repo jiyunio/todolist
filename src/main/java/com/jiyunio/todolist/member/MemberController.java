@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/member")
 @Tag(name = "Member", description = "회원 API")
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign_up")
     @Operation(summary = "회원가입", description = "아이디, 비밀번호, 이메일 이용\n\n 아이디 : 5 ~ 10자 \n\n 비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
         ResponseDTO responseDTO = ResponseDTO.builder()
@@ -29,7 +30,7 @@ public class MemberController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/sign_in")
     @Operation(summary = "로그인", description = "아이디와 비밀번호 이용")
     public ResponseEntity<?> signIn(@Valid @RequestBody SignInDTO signInDto) {
         ResponseDTO responseDTO = ResponseDTO.builder()
@@ -39,7 +40,7 @@ public class MemberController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{member_id}")
     @Operation(summary = "회원 비밀번호 수정", description = "비밀번호, 수정 비밀번호 이용")
     public ResponseEntity<?> updateUserPw(@Parameter(description = "member의 id") @PathVariable Long id, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
         memberService.updateUserPw(id, changeUserPwDto);
@@ -49,7 +50,7 @@ public class MemberController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{member_id}")
     @Operation(summary = "회원 탈퇴", description = "비밀번호 이용")
     public ResponseEntity<ResponseDTO> deleteMember(@Parameter(description = "member의 id") @PathVariable Long id, @RequestParam String userPw) {
         memberService.deleteMember(id, userPw);
@@ -59,3 +60,4 @@ public class MemberController {
         return new ResponseEntity<>(responseDTO, HttpStatus.NO_CONTENT);
     }
 }
+

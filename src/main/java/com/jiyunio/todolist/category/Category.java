@@ -20,15 +20,19 @@ public class Category {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    private String category;
+    private String content;
+
+    private String color;
 
     @Builder
-    protected Category(Member member, String category) {
+    protected Category(Member member, String content, String color) {
         this.member = member;
-        this.category = category;
+        this.content = content;
+        this.color = color;
     }
 
-    protected void updateCategory(String category) {
-        this.category = category;
+    protected void updateCategory(CategoryDTO categoryDTO) {
+        this.content = categoryDTO.getContent();
+        this.color = categoryDTO.getColor();
     }
 }

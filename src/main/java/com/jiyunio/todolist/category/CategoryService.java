@@ -17,36 +17,44 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
 
-    public void createCategory(Long memberId, String categoryName) {
+    public void createCategory(Long memberId, CategoryDTO categoryDTO) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
-        Category category = Category.builder()
+
+        categoryRepository.save(Category.builder()
                 .member(member)
-                .category(categoryName)
-                .build();
-        categoryRepository.save(category);
+                .content(categoryDTO.getContent())
+                .color(categoryDTO.getColor())
+                .build());
     }
 
-    public List<GetCategoryDTO> getCategory(Long memberId) {
+    public List<CategoryDTO> getCategory(Long memberId) {
         List<Category> categories = categoryRepository.findByMemberId(memberId);
-        List<GetCategoryDTO> getCategoryDTO = new ArrayList<>();
+        List<CategoryDTO> getCategoryDTO = new ArrayList<>();
 
         for (Category category : categories) {
-            getCategoryDTO.add(GetCategoryDTO.builder()
-                    .category(category.getCategory()).build());
+            getCategoryDTO.add(CategoryDTO.builder()
+                    .content(category.getContent())
+                    .color(category.getColor())
+                    .build());
         }
         return getCategoryDTO;
     }
 
-    public void updateCategory(Long categoryId, String categoryName) {
+    public void updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId).get();
-        category.updateCategory(categoryName);
+        category.updateCategory(categoryDTO);
         categoryRepository.save(category);
     }
 
     public void deleteCategory(Long categoryId) {
-        categoryRepository.deleteById(categoryId);
+        if (categoryRepository.count() == 1) {
+            //카데고리 개수 >= 1
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NO_ANYMORE_CATEGORY);
+        } else {
+            categoryRepository.deleteById(categoryId);
+        }
     }
 }

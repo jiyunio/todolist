@@ -1,5 +1,7 @@
 package com.jiyunio.todolist.member;
 
+import com.jiyunio.todolist.category.CategoryDTO;
+import com.jiyunio.todolist.category.CategoryService;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final CategoryService categoryService;
 
     public String signUp(@Valid SignUpDTO signUpDto) {
         if (memberRepository.existsByUserId(signUpDto.getUserId())) {
@@ -23,12 +26,20 @@ public class MemberService {
 
         if (signUpDto.getUserPw().equals(signUpDto.getConfirmUserPw())) {
             // 회원가입 성공
+
             Member member = Member.builder()
                     .userId(signUpDto.getUserId())
                     .userPw(signUpDto.getUserPw())
                     .build();
+
             memberRepository.save(member);
-            return member.getUserId();
+
+            //기본 카테고리 생성
+            categoryService.createCategory(member.getId(), CategoryDTO.builder()
+                    .content("기본")
+                    .color("FFFFFF").build());
+
+            return signUpDto.getUserId();
         }
         // 비밀번호 불일치
         throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
@@ -39,7 +50,7 @@ public class MemberService {
             Member member = memberRepository.findByUserId(signInDto.getUserId()).get();
             if (member.getUserPw().equals(signInDto.getUserPw())) {
                 // 로그인 성공
-                return member.getUserId();
+                return signInDto.getUserId();
             }
             // 회원의 비밀번호와 불일치
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);

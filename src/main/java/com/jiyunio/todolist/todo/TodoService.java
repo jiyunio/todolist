@@ -26,15 +26,14 @@ public class TodoService {
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
 
-        Todo todo = Todo.builder()
+        todoRepository.save(Todo.builder()
                 .member(member)
                 .content(createTodo.getContent())
                 .category(createTodo.getCategory())
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .build();
-        todoRepository.save(todo);
+                .build());
     }
 
     public List<GetTodoDTO> getTodo(Long memberId) {
