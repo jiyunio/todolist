@@ -22,7 +22,7 @@ import java.util.List;
 public class TodoController {
     private final TodoService todoService;
 
-    @PostMapping("/{member_id}")
+    @PostMapping("/{memberId}")
     @Operation(summary = "todo 생성", description = "todo checked 기본 값 = False")
     public ResponseEntity<?> createTodo(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
         todoService.createTodo(memberId, createTodo);
@@ -32,13 +32,13 @@ public class TodoController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{member_id}")
+    @GetMapping("/{memberId}")
     @Operation(summary = "todo 조회")
     public List<GetTodoDTO> getTodo(@Parameter(description = "member의 id") @PathVariable Long memberId) {
         return todoService.getTodo(memberId);
     }
 
-    @PutMapping("/{todo_id}")
+    @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
     public ResponseEntity<?> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoDTO updateTodo) {
         todoService.updateTodo(todoId, updateTodo);
@@ -48,7 +48,7 @@ public class TodoController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping("/{todo_id}")
+    @DeleteMapping("/{todoId}")
     @Operation(summary = "todo 삭제")
     public ResponseEntity<ResponseDTO> deleteTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId) {
         todoService.deleteTodo(todoId);

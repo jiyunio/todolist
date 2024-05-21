@@ -20,7 +20,7 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @PostMapping("/{member_id}")
+    @PostMapping("/{memberId}")
     @Operation(summary = "카테고리 생성")
     public ResponseEntity<ResponseDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
         categoryService.createCategory(memberId, categoryDTO);
@@ -30,13 +30,13 @@ public class CategoryController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{member_id}")
+    @GetMapping("/{memberId}")
     @Operation(summary = "카테고리 조회")
     public List<CategoryDTO> getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId) {
         return categoryService.getCategory(memberId);
     }
 
-    @PutMapping("/{category_id}")
+    @PutMapping("/{categoryId}")
     @Operation(summary = "카테고리 수정")
     public ResponseEntity<ResponseDTO> updateCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
         categoryService.updateCategory(categoryId, categoryDTO);
@@ -46,7 +46,7 @@ public class CategoryController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping("/{category_id}")
+    @DeleteMapping("/{categoryId}")
     @Operation(summary = "카테고리 삭제")
     public ResponseEntity<ResponseDTO> deleteCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
