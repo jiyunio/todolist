@@ -4,6 +4,7 @@ import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
+import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import com.jiyunio.todolist.todo.dto.GetTodoDTO;
 import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
@@ -20,20 +21,30 @@ public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
 
-    public void createTodo(Long memberId, CreateTodoDTO createTodo) {
+    public ResponseTodoDTO createTodo(Long memberId, CreateTodoDTO createTodo) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
 
-        todoRepository.save(Todo.builder()
+        Todo todo = Todo.builder()
                 .member(member)
                 .content(createTodo.getContent())
                 .category(createTodo.getCategory())
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .build());
+                .build();
+        todoRepository.save(todo);
+
+        return ResponseTodoDTO.builder()
+                .todoId(todo.getId())
+                .content(todo.getContent())
+                .checked(todo.getChecked())
+                .category(todo.getCategory())
+                .writeDate(todo.getWriteDate())
+                .setDate(todo.getSetDate())
+                .build();
     }
 
     public List<GetTodoDTO> getTodo(Long memberId) {
@@ -52,10 +63,20 @@ public class TodoService {
         return getTodoList;
     }
 
-    public void updateTodo(Long todoId, UpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId, UpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);
+        //todo = todoRepository.findById(todoId).get();
+
+        return ResponseTodoDTO.builder()
+                .todoId(todo.getId())
+                .content(todo.getContent())
+                .checked(todo.getChecked())
+                .category(todo.getCategory())
+                .writeDate(todo.getWriteDate())
+                .setDate(todo.getSetDate())
+                .build();
     }
 
     public boolean deleteTodo(Long todoId) {

@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.category;
 
 import com.jiyunio.todolist.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,12 +23,8 @@ public class CategoryController {
 
     @PostMapping("/{memberId}")
     @Operation(summary = "카테고리 생성")
-    public ResponseEntity<ResponseDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
-        categoryService.createCategory(memberId, categoryDTO);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("카테고리 생성 성공")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
+        return new ResponseEntity<>(categoryService.createCategory(memberId, categoryDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/{memberId}")
@@ -38,12 +35,8 @@ public class CategoryController {
 
     @PutMapping("/{categoryId}")
     @Operation(summary = "카테고리 수정")
-    public ResponseEntity<ResponseDTO> updateCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
-        categoryService.updateCategory(categoryId, categoryDTO);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("카테고리 수정 성공")
-                .build();
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<ResponseCategoryDTO> updateCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
+        return ResponseEntity.ok(categoryService.updateCategory(categoryId, categoryDTO));
     }
 
     @DeleteMapping("/{categoryId}")

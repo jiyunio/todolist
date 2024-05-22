@@ -4,6 +4,7 @@ import com.jiyunio.todolist.ResponseDTO;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
+import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,32 +23,20 @@ public class MemberController {
 
     @PostMapping("/sign-up")
     @Operation(summary = "회원가입", description = "아이디, 비밀번호, 이메일 이용\n\n 아이디 : 5 ~ 10자 \n\n 비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .result(memberService.signUp(signUpDto)) // 화면에 "ㅇㅇ님 환영합니다" 글씨 원함
-                .msg("회원가입 성공")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    public ResponseEntity<ResponseMemberDTO> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
+        return new ResponseEntity<>(memberService.signUp(signUpDto), HttpStatus.CREATED);
     }
 
     @PostMapping("/sign-in")
     @Operation(summary = "로그인", description = "아이디와 비밀번호 이용")
-    public ResponseEntity<?> signIn(@Valid @RequestBody SignInDTO signInDto) {
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .result(memberService.signIn(signInDto)) // 로그인하면 회원 페이지에 ㅇㅇ님 원함
-                .msg("로그인 성공")
-                .build();
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<ResponseMemberDTO> signIn(@Valid @RequestBody SignInDTO signInDto) {
+        return ResponseEntity.ok(memberService.signIn(signInDto));
     }
 
     @PutMapping("/{memberId}")
     @Operation(summary = "회원 비밀번호 수정", description = "비밀번호, 수정 비밀번호 이용")
-    public ResponseEntity<?> updateUserPw(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
-        memberService.updateUserPw(memberId, changeUserPwDto);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("비밀번호 변경 성공")
-                .build();
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<ResponseMemberDTO> updateUserPw(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
+        return ResponseEntity.ok(memberService.updateUserPw(memberId, changeUserPwDto));
     }
 
     @DeleteMapping("/{memberId}")

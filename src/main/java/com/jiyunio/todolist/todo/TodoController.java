@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import com.jiyunio.todolist.todo.dto.GetTodoDTO;
 import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
@@ -24,12 +25,8 @@ public class TodoController {
 
     @PostMapping("/{memberId}")
     @Operation(summary = "todo 생성", description = "todo checked 기본 값 = False")
-    public ResponseEntity<?> createTodo(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
-        todoService.createTodo(memberId, createTodo);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("Todo 생성 완료")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    public ResponseEntity<ResponseTodoDTO> createTodo(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
+        return new ResponseEntity<>(todoService.createTodo(memberId, createTodo), HttpStatus.CREATED);
     }
 
     @GetMapping("/{memberId}")
@@ -41,11 +38,7 @@ public class TodoController {
     @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
     public ResponseEntity<?> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoDTO updateTodo) {
-        todoService.updateTodo(todoId, updateTodo);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("Todo 수정 완료")
-                .build();
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(todoService.updateTodo(todoId, updateTodo));
     }
 
     @DeleteMapping("/{todoId}")
