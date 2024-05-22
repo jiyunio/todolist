@@ -67,7 +67,6 @@ public class TodoService {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);
-        //todo = todoRepository.findById(todoId).get();
 
         return ResponseTodoDTO.builder()
                 .todoId(todo.getId())
