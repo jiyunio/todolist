@@ -45,9 +45,8 @@ public class TodoController {
     @Operation(summary = "todo 삭제")
     public ResponseEntity<ResponseDTO> deleteTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId) {
         todoService.deleteTodo(todoId);
-        ResponseDTO responseDTO = ResponseDTO.builder()
-                .msg("Todo 삭제 완료")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .msg("todo 삭제 성공")
+                .build());
     }
 }

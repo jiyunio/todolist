@@ -1,9 +1,9 @@
 package com.jiyunio.todolist.member;
 
-import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
+import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,10 +43,9 @@ public class MemberController {
     @Operation(summary = "회원 탈퇴", description = "비밀번호 이용")
     public ResponseEntity<ResponseDTO> deleteMember(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestParam String userPw) {
         memberService.deleteMember(memberId, userPw);
-        ResponseDTO responseDTO = ResponseDTO.builder()
+        return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.NO_CONTENT);
+                .build());
     }
 }
 

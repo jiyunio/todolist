@@ -1,7 +1,7 @@
 package com.jiyunio.todolist.category;
 
-import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,9 +43,8 @@ public class CategoryController {
     @Operation(summary = "카테고리 삭제")
     public ResponseEntity<ResponseDTO> deleteCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);
-        ResponseDTO responseDTO = ResponseDTO.builder()
+        return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("카테고리 삭제 성공")
-                .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.NO_CONTENT);
+                .build());
     }
 }
