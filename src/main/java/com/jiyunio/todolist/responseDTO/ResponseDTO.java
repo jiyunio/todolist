@@ -1,4 +1,4 @@
-package com.jiyunio.todolist;
+package com.jiyunio.todolist.responseDTO;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -7,12 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResponseDTO {
-    String result;
     String msg;
 
     @Builder
-    ResponseDTO(String result, String msg) {
-        this.result = result;
+    ResponseDTO(String msg) {
         this.msg = msg;
     }
 }

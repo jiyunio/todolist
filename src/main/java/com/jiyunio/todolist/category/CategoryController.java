@@ -1,6 +1,6 @@
 package com.jiyunio.todolist.category;
 
-import com.jiyunio.todolist.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

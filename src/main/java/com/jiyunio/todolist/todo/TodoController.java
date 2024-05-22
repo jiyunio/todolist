@@ -1,6 +1,6 @@
 package com.jiyunio.todolist.todo;
 
-import com.jiyunio.todolist.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import com.jiyunio.todolist.todo.dto.GetTodoDTO;

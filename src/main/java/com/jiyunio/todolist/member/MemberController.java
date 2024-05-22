@@ -1,6 +1,6 @@
 package com.jiyunio.todolist.member;
 
-import com.jiyunio.todolist.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
