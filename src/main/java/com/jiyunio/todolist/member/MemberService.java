@@ -66,12 +66,14 @@ public class MemberService {
                 // 비밀번호 업데이트 성공
                 member.updateUserPw(changeUserPwDto.getChangePw());
                 memberRepository.save(member);
+            } else {
+                // 변경 비밀번호 불일치
+                throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
             }
-            // 변경 비밀번호 불일치
-            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
+        } else {
+            // 회원의 비밀번호와 불일치
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
         }
-        // 회원의 비밀번호와 불일치
-        throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
     }
 
     public void deleteMember(Long id, String userPw) {
@@ -79,8 +81,9 @@ public class MemberService {
         if (member.getUserPw().equals(userPw)) {
             // 회원 탈퇴 성공
             memberRepository.deleteById(id);
+        } else {
+            // 비밀번호 불일치
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
         }
-        // 비밀번호 불일치
-        throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
     }
 }
