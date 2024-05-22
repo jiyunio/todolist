@@ -32,6 +32,7 @@ public class CategoryService {
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())
+                .content(category.getContent())
                 .color(category.getColor())
                 .build();
     }
@@ -56,6 +57,7 @@ public class CategoryService {
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())
+                .content(category.getContent())
                 .color(category.getColor())
                 .build();
     }
