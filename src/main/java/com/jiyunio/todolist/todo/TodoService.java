@@ -78,8 +78,7 @@ public class TodoService {
                 .build();
     }
 
-    public boolean deleteTodo(Long todoId) {
+    public void deleteTodo(Long todoId) {
         todoRepository.deleteById(todoId);
-        return true;
     }
 }
