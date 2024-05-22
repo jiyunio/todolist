@@ -43,10 +43,6 @@ public class CategoryService {
         return getCategoryDTO;
     }
 
-    public List<CategoryColor> getCategoryColor() {
-
-    }
-
     public void updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
