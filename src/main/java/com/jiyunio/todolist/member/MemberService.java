@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -64,6 +67,19 @@ public class MemberService {
         }
         // 아이디 없음
         throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
+    }
+
+    public List<ResponseMemberDTO> getMembers() {
+        List<Member> members = memberRepository.findAll();
+        List<ResponseMemberDTO> getMembers = new ArrayList<>();
+        for (Member member: members) {
+            getMembers.add(ResponseMemberDTO.builder()
+                    .memberId(member.getId())
+                    .userId(member.getUserId())
+                    .build());
+        }
+
+        return getMembers;
     }
 
     public ResponseMemberDTO updateUserPw(Long id, @Valid ChangeUserPwDTO changeUserPwDto) {
