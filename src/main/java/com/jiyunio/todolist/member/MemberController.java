@@ -39,7 +39,7 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    @Operation(summary = "회원정보 조회", description = "userID 조회")
+    @Operation(summary = "회원 전체 조회")
     public List<ResponseMemberDTO> getMember(){
         return memberService.getMembers();
     }
