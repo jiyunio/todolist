@@ -29,7 +29,7 @@ public class CategoryController {
 
     @GetMapping("/{memberId}")
     @Operation(summary = "카테고리 조회")
-    public List<CategoryDTO> getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId) {
+    public List<ResponseCategoryDTO> getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId) {
         return categoryService.getCategory(memberId);
     }
 

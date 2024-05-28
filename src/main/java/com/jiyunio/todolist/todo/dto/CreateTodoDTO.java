@@ -23,4 +23,7 @@ public class CreateTodoDTO {
 
     @NotNull(message = "설정 일자를 선택해주세요.")
     private LocalDate setDate;
+
+    @NotBlank
+    private String color;
 }

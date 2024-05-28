@@ -6,8 +6,7 @@ import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
-import com.jiyunio.todolist.todo.dto.GetTodoDTO;
-import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,12 +46,12 @@ public class TodoService {
                 .build();
     }
 
-    public List<GetTodoDTO> getTodo(Long memberId) {
+    public List<GetUpdateTodoDTO> getTodo(Long memberId) {
         List<Todo> todoList = todoRepository.findByMemberId(memberId);
-        List<GetTodoDTO> getTodoList = new ArrayList<>();
+        List<GetUpdateTodoDTO> getTodoList = new ArrayList<>();
 
         for (Todo todo : todoList) {
-            getTodoList.add(GetTodoDTO.builder()
+            getTodoList.add(GetUpdateTodoDTO.builder()
                     .content(todo.getContent())
                     .category(todo.getCategory())
                     .writeDate(todo.getWriteDate())
@@ -63,7 +62,7 @@ public class TodoService {
         return getTodoList;
     }
 
-    public ResponseTodoDTO updateTodo(Long todoId, UpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId, GetUpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);

@@ -37,12 +37,13 @@ public class CategoryService {
                 .build();
     }
 
-    public List<CategoryDTO> getCategory(Long memberId) {
+    public List<ResponseCategoryDTO> getCategory(Long memberId) {
         List<Category> categories = categoryRepository.findByMemberId(memberId);
-        List<CategoryDTO> getCategoryDTO = new ArrayList<>();
+        List<ResponseCategoryDTO> getCategoryDTO = new ArrayList<>();
 
         for (Category category : categories) {
-            getCategoryDTO.add(CategoryDTO.builder()
+            getCategoryDTO.add(ResponseCategoryDTO.builder()
+                    .categoryId(category.getId())
                     .content(category.getContent())
                     .color(category.getColor())
                     .build());
