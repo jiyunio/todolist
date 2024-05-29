@@ -34,6 +34,7 @@ public class TodoService {
                 .checked(false)
                 .categoryId(createTodo.getCategoryId())
                 .build();
+
         todoRepository.save(todo);
 
         return ResponseTodoDTO.builder()

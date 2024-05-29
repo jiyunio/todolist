@@ -11,7 +11,6 @@ import lombok.Setter;
 @Schema(description = "회원 비밀번호 수정")
 public class ChangeUserPwDTO {
     @NotBlank(message = "비밀번호를 입력하세요.")
-    @Schema(description = "회원 비밀번호")
     private String userPw;
 
     @NotBlank(message = "변경 비밀번호를 입력하세요.")

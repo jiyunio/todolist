@@ -26,7 +26,7 @@ public class GetUpdateTodoDTO {
     @NotNull(message = "설정 일자를 선택해주세요.")
     private LocalDate setDate;
 
-    @NotBlank
+    @NotNull
     private Long categoryId;
 
     @Builder

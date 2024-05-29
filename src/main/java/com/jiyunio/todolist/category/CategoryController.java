@@ -34,7 +34,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{memberId}/{categoryId}")
-    @Operation(summary = "카테고리 전체 조회")
+    @Operation(summary = "카테고리 조회")
     public ResponseCategoryDTO getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId,
                                            @Parameter(description = "category의 id") @PathVariable Long categoryId) {
         return categoryService.getCategory(memberId, categoryId);
