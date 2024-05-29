@@ -19,7 +19,7 @@ public class ResponseCategoryDTO {
     private String content;
 
     @NotBlank
-    @Schema(description = "category 색깔", example = "FFFFFF")
+    @Schema(description = "category 색깔 (# 제외)", example = "FFFFFF")
     private String color;
 
     @Builder
