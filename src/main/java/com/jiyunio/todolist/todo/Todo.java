@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
 import java.time.LocalDate;
 
 @Getter
@@ -29,17 +30,16 @@ public class Todo {
 
     private Boolean checked;
 
-    private String category;
-
     private LocalDate writeDate;
 
     private LocalDate setDate;
 
-    private String color;
+    @OneToOne
+    private Category category;
 
 
     @Builder
-    protected Todo(Member member, String content, Boolean checked, String category,
+    protected Todo(Member member, String content, Boolean checked, Category category,
                    LocalDate writeDate, LocalDate setDate, String color) {
         this.member = member;
         this.content = content;
@@ -47,7 +47,6 @@ public class Todo {
         this.category = category;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.color = color;
     }
 
     protected void updateTodo(GetUpdateTodoDTO getUpdateTodoDto) {
@@ -56,6 +55,5 @@ public class Todo {
         this.writeDate = getUpdateTodoDto.getWriteDate();
         this.setDate = getUpdateTodoDto.getSetDate();
         this.category = getUpdateTodoDto.getCategory();
-        this.color = getUpdateTodoDto.getColor();
     }
 }

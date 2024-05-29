@@ -29,11 +29,10 @@ public class TodoService {
         Todo todo = Todo.builder()
                 .member(member)
                 .content(createTodo.getContent())
-                .category(createTodo.getCategory())
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .color(createTodo.getColor())
+                .category(createTodo.getCategory())
                 .build();
         todoRepository.save(todo);
 
@@ -41,10 +40,9 @@ public class TodoService {
                 .todoId(todo.getId())
                 .content(todo.getContent())
                 .checked(todo.getChecked())
-                .category(todo.getCategory())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .color(todo.getColor())
+                .category(todo.getCategory())
                 .build();
     }
 
@@ -56,11 +54,10 @@ public class TodoService {
             getTodoList.add(ResponseTodoDTO.builder()
                     .todoId(todo.getId())
                     .content(todo.getContent())
-                    .category(todo.getCategory())
                     .writeDate(todo.getWriteDate())
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
-                    .color(todo.getColor())
+                    .category(todo.getCategory())
                     .build());
         }
         return getTodoList;
@@ -75,10 +72,9 @@ public class TodoService {
                 .todoId(todo.getId())
                 .content(todo.getContent())
                 .checked(todo.getChecked())
-                .category(todo.getCategory())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .color(todo.getColor())
+                .category(todo.getCategory())
                 .build();
     }
 

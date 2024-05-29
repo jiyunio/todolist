@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.todo.dto;
 
+import com.jiyunio.todolist.category.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,9 +20,6 @@ public class GetUpdateTodoDTO {
     @NotNull
     private Boolean checked;
 
-    @NotBlank
-    private String category;
-
     @NotNull(message = "작성 일자를 선택해주세요.")
     private LocalDate writeDate;
 
@@ -29,16 +27,15 @@ public class GetUpdateTodoDTO {
     private LocalDate setDate;
 
     @NotBlank
-    private String color;
+    private Category category;
 
     @Builder
-    protected GetUpdateTodoDTO(String content, Boolean checked, String category,
+    protected GetUpdateTodoDTO(String content, Boolean checked, Category category,
                                LocalDate writeDate, LocalDate setDate, String color) {
         this.content = content;
         this.checked = checked;
         this.category = category;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.color = color;
     }
 }

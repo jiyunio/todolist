@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.todo.dto;
 
+import com.jiyunio.todolist.category.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,9 +16,6 @@ public class CreateTodoDTO {
     @NotBlank(message = "todo를 작성해주세요.")
     private String content;
 
-    @NotBlank
-    private String category;
-
     @NotNull(message = "작성 일자를 선택해주세요.")
     private LocalDate writeDate;
 
@@ -25,5 +23,5 @@ public class CreateTodoDTO {
     private LocalDate setDate;
 
     @NotBlank
-    private String color;
+    private Category category;
 }
