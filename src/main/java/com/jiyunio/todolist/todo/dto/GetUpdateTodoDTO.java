@@ -27,15 +27,15 @@ public class GetUpdateTodoDTO {
     private LocalDate setDate;
 
     @NotBlank
-    private Category category;
+    private Long categoryId;
 
     @Builder
-    protected GetUpdateTodoDTO(String content, Boolean checked, Category category,
-                               LocalDate writeDate, LocalDate setDate, String color) {
+    protected GetUpdateTodoDTO(String content, Boolean checked,
+                               LocalDate writeDate, LocalDate setDate, Long categoryId) {
         this.content = content;
         this.checked = checked;
-        this.category = category;
         this.writeDate = writeDate;
         this.setDate = setDate;
+        this.categoryId = categoryId;
     }
 }

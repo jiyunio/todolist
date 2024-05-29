@@ -23,5 +23,5 @@ public class CreateTodoDTO {
     private LocalDate setDate;
 
     @NotBlank
-    private Category category;
+    private Long categoryId;
 }

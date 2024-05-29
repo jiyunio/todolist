@@ -27,10 +27,17 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.createCategory(memberId, categoryDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{memberId}")
-    @Operation(summary = "카테고리 조회")
-    public List<ResponseCategoryDTO> getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId) {
-        return categoryService.getCategory(memberId);
+    @GetMapping("/categories/{memberId}")
+    @Operation(summary = "카테고리 전체 조회")
+    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id") @PathVariable Long memberId) {
+        return categoryService.getCategories(memberId);
+    }
+
+    @GetMapping("/{memberId}/{categoryId}")
+    @Operation(summary = "카테고리 전체 조회")
+    public ResponseCategoryDTO getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId,
+                                           @Parameter(description = "category의 id") @PathVariable Long categoryId) {
+        return categoryService.getCategory(memberId, categoryId);
     }
 
     @PutMapping("/{categoryId}")

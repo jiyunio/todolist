@@ -32,7 +32,7 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .category(createTodo.getCategory())
+                .categoryId(createTodo.getCategoryId())
                 .build();
         todoRepository.save(todo);
 
@@ -42,7 +42,7 @@ public class TodoService {
                 .checked(todo.getChecked())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .category(todo.getCategory())
+                .categoryId(todo.getCategoryId())
                 .build();
     }
 
@@ -57,13 +57,13 @@ public class TodoService {
                     .writeDate(todo.getWriteDate())
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
-                    .category(todo.getCategory())
+                    .categoryId(todo.getCategoryId())
                     .build());
         }
         return getTodoList;
     }
 
-    public ResponseTodoDTO updateTodo(Long todoId, GetUpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId,GetUpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);
@@ -74,7 +74,7 @@ public class TodoService {
                 .checked(todo.getChecked())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .category(todo.getCategory())
+                .categoryId(todo.getCategoryId())
                 .build();
     }
 

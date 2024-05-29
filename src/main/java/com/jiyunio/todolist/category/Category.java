@@ -27,16 +27,11 @@ public class Category {
 
     private String color;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "todoId")
-    List<Todo> todo;
-
     @Builder
-    protected Category(Member member, String content, String color, List<Todo> todo) {
+    protected Category(Member member, String content, String color) {
         this.member = member;
         this.content = content;
         this.color = color;
-        this.todo = todo;
     }
 
     protected void updateCategory(CategoryDTO categoryDTO) {

@@ -6,6 +6,7 @@ import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.todo.Todo;
+import com.jiyunio.todolist.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+    private final TodoRepository todoRepository;
 
     public ResponseCategoryDTO createCategory(Long memberId, CategoryDTO categoryDTO) {
         Member member = memberRepository.findById(memberId).orElseThrow(
@@ -40,7 +42,7 @@ public class CategoryService {
                 .build();
     }
 
-    public List<ResponseCategoryDTO> getCategory(Long memberId) {
+    public List<ResponseCategoryDTO> getCategories(Long memberId) {
         List<Category> categories = categoryRepository.findByMemberId(memberId);
         List<ResponseCategoryDTO> getCategoryDTO = new ArrayList<>();
 
@@ -54,12 +56,25 @@ public class CategoryService {
         return getCategoryDTO;
     }
 
+    public ResponseCategoryDTO getCategory(Long memberId, Long categoryId) {
+        List<Category> categories = categoryRepository.findByMemberId(memberId);
+        for (Category category : categories){
+            if(category.getId().equals(categoryId)){
+                return ResponseCategoryDTO.builder()
+                        .categoryId(categoryId)
+                        .content(category.getContent())
+                        .color(category.getColor())
+                        .build();
+            }
+        }
+        throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_CATEGORY);
+    }
+
     public ResponseCategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
         categoryRepository.save(category);
 
-        List<Todo> todoList = category.getTodo();
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())
