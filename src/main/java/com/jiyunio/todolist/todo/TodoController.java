@@ -30,13 +30,13 @@ public class TodoController {
 
     @GetMapping("/{memberId}")
     @Operation(summary = "todo 조회")
-    public List<GetUpdateTodoDTO> getTodo(@Parameter(description = "member의 id") @PathVariable Long memberId) {
+    public List<ResponseTodoDTO> getTodo(@Parameter(description = "member의 id") @PathVariable Long memberId) {
         return todoService.getTodo(memberId);
     }
 
     @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
-    public ResponseEntity<?> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody GetUpdateTodoDTO updateTodo) {
+    public ResponseEntity<ResponseTodoDTO> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody GetUpdateTodoDTO updateTodo) {
         return ResponseEntity.ok(todoService.updateTodo(todoId, updateTodo));
     }
 

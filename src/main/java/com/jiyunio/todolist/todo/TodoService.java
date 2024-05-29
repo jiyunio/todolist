@@ -33,6 +33,7 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
+                .color(createTodo.getColor())
                 .build();
         todoRepository.save(todo);
 
@@ -43,20 +44,23 @@ public class TodoService {
                 .category(todo.getCategory())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
+                .color(todo.getColor())
                 .build();
     }
 
-    public List<GetUpdateTodoDTO> getTodo(Long memberId) {
+    public List<ResponseTodoDTO> getTodo(Long memberId) {
         List<Todo> todoList = todoRepository.findByMemberId(memberId);
-        List<GetUpdateTodoDTO> getTodoList = new ArrayList<>();
+        List<ResponseTodoDTO> getTodoList = new ArrayList<>();
 
         for (Todo todo : todoList) {
-            getTodoList.add(GetUpdateTodoDTO.builder()
+            getTodoList.add(ResponseTodoDTO.builder()
+                    .todoId(todo.getId())
                     .content(todo.getContent())
                     .category(todo.getCategory())
                     .writeDate(todo.getWriteDate())
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
+                    .color(todo.getColor())
                     .build());
         }
         return getTodoList;
@@ -74,6 +78,7 @@ public class TodoService {
                 .category(todo.getCategory())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
+                .color(todo.getColor())
                 .build();
     }
 

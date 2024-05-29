@@ -35,14 +35,18 @@ public class Todo {
 
     private LocalDate setDate;
 
+    private String color;
+
     @Builder
-    protected Todo(Member member, String content, Boolean checked, String category, LocalDate writeDate, LocalDate setDate) {
+    protected Todo(Member member, String content, Boolean checked, String category,
+                   LocalDate writeDate, LocalDate setDate, String color) {
         this.member = member;
         this.content = content;
         this.checked = checked;
         this.category = category;
         this.writeDate = writeDate;
         this.setDate = setDate;
+        this.color = color;
     }
 
     protected void updateTodo(GetUpdateTodoDTO getUpdateTodoDto) {
