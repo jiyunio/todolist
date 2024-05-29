@@ -3,6 +3,7 @@ package com.jiyunio.todolist.todo;
 import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.member.Member;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

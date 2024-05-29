@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.todo;
 
+import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
@@ -33,6 +34,11 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
+                .category(Category.builder()
+                        .member(member)
+                        .content(createTodo.getCategory().getContent())
+                        .color(createTodo.getCategory().getColor())
+                        .build())
                 .build();
 
         todoRepository.save(todo);
