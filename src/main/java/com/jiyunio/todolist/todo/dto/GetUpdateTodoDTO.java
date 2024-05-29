@@ -1,7 +1,7 @@
 package com.jiyunio.todolist.todo.dto;
 
+import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.category.CategoryDTO;
-import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Schema(description = "todo 수정")
-public class UpdateTodoDTO {
+public class GetUpdateTodoDTO {
     @NotBlank(message = "todo를 작성해주세요.")
     @Schema(description = "todo 내용", example = "친구랑 홍대")
     private String content;
@@ -32,16 +32,23 @@ public class UpdateTodoDTO {
     private LocalDate setDate;
 
     @NotNull
-    @Schema(description = "category")
-    private ResponseCategoryDTO category;
+    private Long categoryId;
+
+    @NotBlank
+    private String categoryContent;
+
+    @NotBlank
+    private String categoryColor;
 
     @Builder
-    protected UpdateTodoDTO(String content, Boolean checked, LocalDate writeDate, LocalDate setDate,
-                            ResponseCategoryDTO category) {
+    protected GetUpdateTodoDTO(String content, Boolean checked, LocalDate writeDate, LocalDate setDate,
+                               Long categoryId, String categoryContent, String categoryColor) {
         this.content = content;
         this.checked = checked;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.category = category;
+        this.categoryId = categoryId;
+        this.categoryContent = categoryContent;
+        this.categoryColor = categoryColor;
     }
 }

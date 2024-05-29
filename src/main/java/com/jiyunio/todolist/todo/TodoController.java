@@ -2,9 +2,10 @@ package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.customError.ErrorDTO;
 import com.jiyunio.todolist.responseDTO.ResponseDTO;
+import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
-import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,7 +48,7 @@ public class TodoController {
     @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
     @ApiResponse(responseCode = "200", description = "todo 수정 성공", content = @Content(schema = @Schema(implementation = ResponseTodoDTO.class)))
-    public ResponseEntity<ResponseTodoDTO> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoDTO updateTodo) {
+    public ResponseEntity<ResponseTodoDTO> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody GetUpdateTodoDTO updateTodo) {
         return ResponseEntity.ok(todoService.updateTodo(todoId, updateTodo));
     }
 

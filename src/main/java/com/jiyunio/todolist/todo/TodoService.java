@@ -9,7 +9,7 @@ import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
-import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -82,7 +82,7 @@ public class TodoService {
         return getTodoList;
     }
 
-    public ResponseTodoDTO updateTodo(Long todoId, UpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId, GetUpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);
