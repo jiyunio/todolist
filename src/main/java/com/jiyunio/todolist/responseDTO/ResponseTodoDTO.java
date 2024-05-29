@@ -16,16 +16,16 @@ public class ResponseTodoDTO {
     private boolean checked;
     private LocalDate writeDate;
     private LocalDate setDate;
-    private Long categoryId;
+    private ResponseCategoryDTO category;
 
     @Builder
     protected ResponseTodoDTO(Long todoId, String content, boolean checked,
-                               LocalDate writeDate, LocalDate setDate, Long categoryId){
+                               LocalDate writeDate, LocalDate setDate, ResponseCategoryDTO category){
         this.todoId = todoId;
         this.content = content;
         this.checked = checked;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 }

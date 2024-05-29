@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.Category;
+import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import jakarta.persistence.*;
@@ -34,18 +35,20 @@ public class Todo {
 
     private LocalDate setDate;
 
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId")
+    private Category category;
 
 
     @Builder
     protected Todo(Member member, String content, Boolean checked,
-                   LocalDate writeDate, LocalDate setDate, Long categoryId) {
+                   LocalDate writeDate, LocalDate setDate, Category category) {
         this.member = member;
         this.content = content;
         this.checked = checked;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 
     protected void updateTodo(GetUpdateTodoDTO getUpdateTodoDto) {
@@ -53,6 +56,5 @@ public class Todo {
         this.checked = getUpdateTodoDto.getChecked();
         this.writeDate = getUpdateTodoDto.getWriteDate();
         this.setDate = getUpdateTodoDto.getSetDate();
-        this.categoryId = getUpdateTodoDto.getCategoryId();
     }
 }

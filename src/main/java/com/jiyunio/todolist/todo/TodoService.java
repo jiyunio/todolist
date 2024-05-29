@@ -4,6 +4,7 @@ import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
@@ -32,7 +33,6 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .categoryId(createTodo.getCategoryId())
                 .build();
 
         todoRepository.save(todo);
@@ -43,7 +43,11 @@ public class TodoService {
                 .checked(todo.getChecked())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .categoryId(todo.getCategoryId())
+                .category(ResponseCategoryDTO.builder()
+                        .categoryId(todo.getCategory().getId())
+                        .content(todo.getCategory().getContent())
+                        .color(todo.getCategory().getColor())
+                        .build())
                 .build();
     }
 
@@ -58,13 +62,17 @@ public class TodoService {
                     .writeDate(todo.getWriteDate())
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
-                    .categoryId(todo.getCategoryId())
+                    .category(ResponseCategoryDTO.builder()
+                            .categoryId(todo.getCategory().getId())
+                            .content(todo.getCategory().getContent())
+                            .color(todo.getCategory().getColor())
+                            .build())
                     .build());
         }
         return getTodoList;
     }
 
-    public ResponseTodoDTO updateTodo(Long todoId,GetUpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId, GetUpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);
@@ -75,7 +83,6 @@ public class TodoService {
                 .checked(todo.getChecked())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
-                .categoryId(todo.getCategoryId())
                 .build();
     }
 
