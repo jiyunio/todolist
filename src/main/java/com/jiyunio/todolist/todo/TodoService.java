@@ -27,6 +27,11 @@ public class TodoService {
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
+        Category category = Category.builder()
+                .member(member)
+                .content(createTodo.getCategory().getContent())
+                .color(createTodo.getCategory().getColor())
+                .build();
 
         Todo todo = Todo.builder()
                 .member(member)
@@ -34,11 +39,7 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .category(Category.builder()
-                        .member(member)
-                        .content(createTodo.getCategory().getContent())
-                        .color(createTodo.getCategory().getColor())
-                        .build())
+                .category(category)
                 .build();
 
         todoRepository.save(todo);
