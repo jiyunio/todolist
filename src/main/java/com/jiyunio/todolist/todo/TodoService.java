@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.Category;
+import com.jiyunio.todolist.category.CategoryRepository;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
@@ -21,17 +22,15 @@ import java.util.List;
 public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
+    private final CategoryRepository categoryRepository;
 
     public ResponseTodoDTO createTodo(Long memberId, CreateTodoDTO createTodo) {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
-        Category category = Category.builder()
-                .member(member)
-                .content(createTodo.getCategory().getContent())
-                .color(createTodo.getCategory().getColor())
-                .build();
+
+        Category category = categoryRepository.findById(createTodo.getCategory().getId()).get();
 
         Todo todo = Todo.builder()
                 .member(member)

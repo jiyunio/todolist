@@ -24,5 +24,5 @@ public class CreateTodoDTO {
     private LocalDate setDate;
 
     @NotNull
-    private ResponseCategoryDTO category;
+    private Category category;
 }
