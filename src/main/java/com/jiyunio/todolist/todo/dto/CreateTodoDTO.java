@@ -2,6 +2,7 @@ package com.jiyunio.todolist.todo.dto;
 
 import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,5 +25,5 @@ public class CreateTodoDTO {
     private LocalDate setDate;
 
     @NotNull
-    private Category category;
+    private ResponseCategoryDTO category;
 }

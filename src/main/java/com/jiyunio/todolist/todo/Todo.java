@@ -4,6 +4,7 @@ import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,20 +37,24 @@ public class Todo {
 
     private LocalDate setDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoryId")
-    private Category category;
+    private Long categoryId;
+
+    private String categoryColor;
+
+    private String categoryContent;
 
 
     @Builder
-    protected Todo(Member member, String content, Boolean checked,
-                   LocalDate writeDate, LocalDate setDate, Category category) {
+    protected Todo(Member member, String content, Boolean checked, LocalDate writeDate, LocalDate setDate,
+                   Long categoryId, String categoryContent, String categoryColor) {
         this.member = member;
         this.content = content;
         this.checked = checked;
         this.writeDate = writeDate;
         this.setDate = setDate;
-        this.category = category;
+        this.categoryId = categoryId;
+        this.categoryContent = categoryContent;
+        this.categoryColor = categoryColor;
     }
 
     protected void updateTodo(GetUpdateTodoDTO getUpdateTodoDto) {

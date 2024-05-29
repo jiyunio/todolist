@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Optional<Category> findById(Long todoId);
+    Optional<Category> findById(Long categoryId);
 
     List<Category> findByMemberId(Long memberId);
+
+
 }

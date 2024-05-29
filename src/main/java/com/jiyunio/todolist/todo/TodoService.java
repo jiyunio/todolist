@@ -1,6 +1,5 @@
 package com.jiyunio.todolist.todo;
 
-import com.jiyunio.todolist.category.Category;
 import com.jiyunio.todolist.category.CategoryRepository;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
@@ -30,7 +29,6 @@ public class TodoService {
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
 
-        Category category = categoryRepository.findById(createTodo.getCategory().getId()).get();
 
         Todo todo = Todo.builder()
                 .member(member)
@@ -38,7 +36,9 @@ public class TodoService {
                 .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
-                .category(category)
+                .categoryId(createTodo.getCategory().getCategoryId())
+                .categoryContent(createTodo.getCategory().getContent())
+                .categoryColor(createTodo.getCategory().getColor())
                 .build();
 
         todoRepository.save(todo);
@@ -50,9 +50,9 @@ public class TodoService {
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
                 .category(ResponseCategoryDTO.builder()
-                        .categoryId(todo.getCategory().getId())
-                        .content(todo.getCategory().getContent())
-                        .color(todo.getCategory().getColor())
+                        .categoryId(todo.getCategoryId())
+                        .content(todo.getContent())
+                        .color(todo.getCategoryColor())
                         .build())
                 .build();
     }
@@ -69,9 +69,9 @@ public class TodoService {
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
                     .category(ResponseCategoryDTO.builder()
-                            .categoryId(todo.getCategory().getId())
-                            .content(todo.getCategory().getContent())
-                            .color(todo.getCategory().getColor())
+                            .categoryId(todo.getCategoryId())
+                            .content(todo.getCategoryContent())
+                            .color(todo.getCategoryColor())
                             .build())
                     .build());
         }
@@ -89,6 +89,11 @@ public class TodoService {
                 .checked(todo.getChecked())
                 .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
+                .category(ResponseCategoryDTO.builder()
+                        .categoryId(todo.getCategoryId())
+                        .content(todo.getCategoryContent())
+                        .color(todo.getCategoryColor())
+                        .build())
                 .build();
     }
 

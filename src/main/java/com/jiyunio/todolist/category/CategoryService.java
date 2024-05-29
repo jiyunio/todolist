@@ -28,6 +28,8 @@ public class CategoryService {
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
+
+
         Category category = Category.builder()
                 .member(member)
                 .content(categoryDTO.getContent())
