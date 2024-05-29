@@ -35,6 +35,8 @@ public class Todo {
 
     private LocalDate setDate;
 
+    private String color;
+
 
     @Builder
     protected Todo(Member member, String content, Boolean checked, String category,
@@ -54,5 +56,6 @@ public class Todo {
         this.writeDate = getUpdateTodoDto.getWriteDate();
         this.setDate = getUpdateTodoDto.getSetDate();
         this.category = getUpdateTodoDto.getCategory();
+        this.color = getUpdateTodoDto.getColor();
     }
 }
