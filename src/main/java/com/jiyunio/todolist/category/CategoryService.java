@@ -5,8 +5,8 @@ import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
-import com.jiyunio.todolist.todo.Todo;
 import com.jiyunio.todolist.todo.TodoRepository;
+import com.jiyunio.todolist.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
-    private final TodoRepository todoRepository;
+    private final TodoService todoService;
 
     public ResponseCategoryDTO createCategory(Long memberId, CategoryDTO categoryDTO) {
         Member member = memberRepository.findById(memberId).orElseThrow(
@@ -60,8 +60,8 @@ public class CategoryService {
 
     public ResponseCategoryDTO getCategory(Long memberId, Long categoryId) {
         List<Category> categories = categoryRepository.findByMemberId(memberId);
-        for (Category category : categories){
-            if(category.getId().equals(categoryId)){
+        for (Category category : categories) {
+            if (category.getId().equals(categoryId)) {
                 return ResponseCategoryDTO.builder()
                         .categoryId(categoryId)
                         .content(category.getContent())
@@ -76,7 +76,11 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
         categoryRepository.save(category);
-
+        todoService.updateCategory(ResponseCategoryDTO.builder() //member의 category 상태도 변경
+                .categoryId(categoryId)
+                .content(category.getContent())
+                .color(category.getColor())
+                .build());
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())

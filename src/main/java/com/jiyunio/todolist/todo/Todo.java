@@ -63,4 +63,10 @@ public class Todo {
         this.writeDate = getUpdateTodoDto.getWriteDate();
         this.setDate = getUpdateTodoDto.getSetDate();
     }
+
+    protected void updateCategory(ResponseCategoryDTO categoryDTO){
+        this.categoryId = categoryDTO.getCategoryId();
+        this.categoryContent = categoryDTO.getContent();
+        this.categoryColor = categoryDTO.getColor();
+    }
 }

@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.todo;
 
+import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.category.CategoryRepository;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
@@ -95,6 +96,14 @@ public class TodoService {
                         .color(todo.getCategoryColor())
                         .build())
                 .build();
+    }
+
+    public void updateCategory(ResponseCategoryDTO categoryDTO) {
+        List<Todo> todoList = todoRepository.findByCategoryId(categoryDTO.getCategoryId());
+        for (Todo todo : todoList) {
+            todo.updateCategory(categoryDTO);
+            todoRepository.save(todo);
+        }
     }
 
     public void deleteTodo(Long todoId) {
