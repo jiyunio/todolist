@@ -16,14 +16,18 @@ import java.time.LocalDate;
 @Schema(description = "todo 생성 : todo checked 기본 값 False")
 public class CreateTodoDTO {
     @NotBlank(message = "todo를 작성해주세요.")
+    @Schema(description = "todo 내용", example = "친구랑 치킨집")
     private String content;
 
     @NotNull(message = "작성 일자를 선택해주세요.")
+    @Schema(description = "todo 작성 일자", example = "YYYY-MM-DD")
     private LocalDate writeDate;
 
     @NotNull(message = "설정 일자를 선택해주세요.")
+    @Schema(description = "todo 설정 일자", example = "YYYY-MM-DD")
     private LocalDate setDate;
 
     @NotNull
+    @Schema(description = "category")
     private ResponseCategoryDTO category;
 }

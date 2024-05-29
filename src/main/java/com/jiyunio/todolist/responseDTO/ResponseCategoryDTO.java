@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.responseDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -10,12 +11,15 @@ import lombok.Setter;
 @Setter
 public class ResponseCategoryDTO {
     @NotNull
+    @Schema(description = "category Id", example = "1")
     private Long categoryId;
 
     @NotBlank
+    @Schema(description = "category 내용", example = "약속")
     private String content;
 
     @NotBlank
+    @Schema(description = "category 색깔", example = "FFFFFF")
     private String color;
 
     @Builder

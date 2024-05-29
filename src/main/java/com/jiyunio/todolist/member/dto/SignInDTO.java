@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 public class SignInDTO {
     @NotBlank(message = "아이디를 입력하세요.")
-    @Schema(example = "qwe123")
+    @Schema(description = "회원의 userId", example = "qwe123")
     private String userId;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
-    @Schema(example = "qwer1234!")
+    @Schema(description = "회원의 비밀번호", example = "qwer1234!")
     private String userPw;
 }

@@ -9,7 +9,7 @@ import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
-import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,6 @@ public class TodoService {
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
-
 
         Todo todo = Todo.builder()
                 .member(member)
@@ -60,7 +59,7 @@ public class TodoService {
 
     public List<ResponseTodoDTO> getTodo(Long memberId) {
         List<Todo> todoList = todoRepository.findByMemberId(memberId);
-        if(todoList == null) {
+        if (todoList == null) {
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
         }
 
@@ -83,7 +82,7 @@ public class TodoService {
         return getTodoList;
     }
 
-    public ResponseTodoDTO updateTodo(Long todoId, GetUpdateTodoDTO updateTodo) {
+    public ResponseTodoDTO updateTodo(Long todoId, UpdateTodoDTO updateTodo) {
         Todo todo = todoRepository.findById(todoId).get();
         todo.updateTodo(updateTodo);
         todoRepository.save(todo);

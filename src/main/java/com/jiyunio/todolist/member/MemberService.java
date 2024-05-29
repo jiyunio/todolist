@@ -62,10 +62,8 @@ public class MemberService {
                         .userId(member.getUserId())
                         .build();
             }
-            // 회원의 비밀번호와 불일치
-            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
         }
-        // 아이디 없음
+        // 아이디 및 회원 비밀번호 불일치
         throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
     }
 
@@ -78,7 +76,6 @@ public class MemberService {
                     .userId(member.getUserId())
                     .build());
         }
-
         return getMembers;
     }
 

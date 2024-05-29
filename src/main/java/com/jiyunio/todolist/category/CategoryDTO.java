@@ -8,12 +8,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(description = "카테고리 생성 & 조회 & 수정")
+@Schema(description = "category 생성 & 조회 & 수정")
 public class CategoryDTO {
     @NotBlank
+    @Schema(description = "category 내용", example = "약속")
     private String content;
 
     @NotBlank
+    @Schema(description = "category 색깔", example = "FFFFFF (# 제외)")
     private String color;
 
     @Builder
