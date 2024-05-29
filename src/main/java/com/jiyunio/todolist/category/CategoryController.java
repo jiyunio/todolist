@@ -31,7 +31,7 @@ public class CategoryController {
     @ApiResponse(responseCode = "200", description = "카테고리 생성 성공", content = @Content(schema = @Schema(implementation = ResponseCategoryDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.createCategory(memberId, categoryDTO), HttpStatus.CREATED);
     }
 
@@ -40,7 +40,7 @@ public class CategoryController {
     @ApiResponse(responseCode = "200", description = "카테고리 전체 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCategoryDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId) {
+    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id") @PathVariable Long memberId) {
         return categoryService.getCategories(memberId);
     }
 

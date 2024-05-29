@@ -2,7 +2,7 @@ package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.member.Member;
-import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,11 +53,11 @@ public class Todo {
         this.categoryColor = categoryColor;
     }
 
-    protected void updateTodo(GetUpdateTodoDTO getUpdateTodoDto) {
-        this.content = getUpdateTodoDto.getContent();
-        this.checked = getUpdateTodoDto.getChecked();
-        this.writeDate = getUpdateTodoDto.getWriteDate();
-        this.setDate = getUpdateTodoDto.getSetDate();
+    protected void updateTodo(UpdateTodoDTO updateTodoDto) {
+        this.content = updateTodoDto.getContent();
+        this.checked = updateTodoDto.getChecked();
+        this.writeDate = updateTodoDto.getWriteDate();
+        this.setDate = updateTodoDto.getSetDate();
     }
 
     protected void updateCategory(CategoryDTO categoryDTO) {

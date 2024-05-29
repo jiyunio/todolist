@@ -1,11 +1,11 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.customError.ErrorDTO;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseDTO;
-import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
-import com.jiyunio.todolist.todo.dto.GetUpdateTodoDTO;
+import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,7 +28,7 @@ public class TodoController {
     private final TodoService todoService;
 
     @PostMapping("/{memberId}")
-    @Operation(summary = "todo 생성", description = "todo checked 기본 값 = False")
+    @Operation(summary = "todo 생성")
     @ApiResponse(responseCode = "200", description = "todo 생성 성공", content = @Content(schema = @Schema(implementation = ResponseTodoDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
@@ -48,7 +48,7 @@ public class TodoController {
     @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
     @ApiResponse(responseCode = "200", description = "todo 수정 성공", content = @Content(schema = @Schema(implementation = ResponseTodoDTO.class)))
-    public ResponseEntity<ResponseTodoDTO> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody GetUpdateTodoDTO updateTodo) {
+    public ResponseEntity<ResponseTodoDTO> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoDTO updateTodo) {
         return ResponseEntity.ok(todoService.updateTodo(todoId, updateTodo));
     }
 
