@@ -60,6 +60,10 @@ public class TodoService {
 
     public List<ResponseTodoDTO> getTodo(Long memberId) {
         List<Todo> todoList = todoRepository.findByMemberId(memberId);
+        if(todoList == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
+        }
+
         List<ResponseTodoDTO> getTodoList = new ArrayList<>();
 
         for (Todo todo : todoList) {

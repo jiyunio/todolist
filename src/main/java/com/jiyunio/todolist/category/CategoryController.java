@@ -23,13 +23,13 @@ public class CategoryController {
 
     @PostMapping("/{memberId}")
     @Operation(summary = "카테고리 생성")
-    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.createCategory(memberId, categoryDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/categories/{memberId}")
     @Operation(summary = "카테고리 전체 조회")
-    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id") @PathVariable Long memberId) {
+    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId) {
         return categoryService.getCategories(memberId);
     }
 

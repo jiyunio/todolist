@@ -26,13 +26,13 @@ public class TodoController {
 
     @PostMapping("/{memberId}")
     @Operation(summary = "todo 생성", description = "todo checked 기본 값 = False")
-    public ResponseEntity<ResponseTodoDTO> createTodo(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
+    public ResponseEntity<ResponseTodoDTO> createTodo(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
         return new ResponseEntity<>(todoService.createTodo(memberId, createTodo), HttpStatus.CREATED);
     }
 
     @GetMapping("/{memberId}")
     @Operation(summary = "todo 조회")
-    public List<ResponseTodoDTO> getTodo(@Parameter(description = "member의 id") @PathVariable Long memberId) {
+    public List<ResponseTodoDTO> getTodo(@Parameter(description = "member의 id / memberId 존재 X => NOT_FOUND_NOT_EXIST_MEMBER") @PathVariable Long memberId) {
         return todoService.getTodo(memberId);
     }
 

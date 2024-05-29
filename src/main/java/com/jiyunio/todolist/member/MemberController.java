@@ -7,14 +7,17 @@ import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.annotation.Target;
 import java.util.List;
 
 @RestController
@@ -27,6 +30,7 @@ public class MemberController {
     @PostMapping("/sign-up")
     @Operation(summary = "회원가입",
             description = "아이디, 비밀번호 이용\n\n 아이디 : 5 ~ 10자\n\n 비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자")
+    @ApiResponse(responseCode = "200", description = "회원가입 성공", content =  @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
     public ResponseEntity<ResponseMemberDTO> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
         return new ResponseEntity<>(memberService.signUp(signUpDto), HttpStatus.CREATED);
     }
@@ -40,7 +44,7 @@ public class MemberController {
 
     @GetMapping("/members")
     @Operation(summary = "회원 전체 조회")
-    public List<ResponseMemberDTO> getMember(){
+    public List<ResponseMemberDTO> getMember() {
         return memberService.getMembers();
     }
 

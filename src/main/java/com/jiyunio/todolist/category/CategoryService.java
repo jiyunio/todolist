@@ -47,6 +47,9 @@ public class CategoryService {
 
     public List<ResponseCategoryDTO> getCategories(Long memberId) {
         List<Category> categories = categoryRepository.findByMemberId(memberId);
+        if(categories == null){
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
+        }
         List<ResponseCategoryDTO> getCategoryDTO = new ArrayList<>();
 
         for (Category category : categories) {
