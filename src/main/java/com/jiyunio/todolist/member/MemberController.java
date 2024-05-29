@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.member;
 
+import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
@@ -30,7 +31,9 @@ public class MemberController {
     @PostMapping("/sign-up")
     @Operation(summary = "회원가입",
             description = "아이디, 비밀번호 이용\n\n 아이디 : 5 ~ 10자\n\n 비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자")
-    @ApiResponse(responseCode = "200", description = "회원가입 성공", content =  @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
+    @ApiResponse(responseCode = "200", description = "회원가입 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
+    @ApiResponse(responseCode = "400", description = "이미 존재하는 아이디 (EXIST_USERID)", content = @Content(schema = @Schema(implementation = CustomException.class)))
+    @ApiResponse(responseCode = "400", description = "비밀번호 불일치 (NO_SAME_CONFIRM_PASSWORD)", content =  @Content(schema = @Schema(implementation = CustomException.class)))
     public ResponseEntity<ResponseMemberDTO> signUp(@Valid @RequestBody SignUpDTO signUpDto) {
         return new ResponseEntity<>(memberService.signUp(signUpDto), HttpStatus.CREATED);
     }
