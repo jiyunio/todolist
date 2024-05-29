@@ -7,6 +7,7 @@ import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.todo.TodoRepository;
 import com.jiyunio.todolist.todo.TodoService;
+import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -58,26 +59,11 @@ public class CategoryService {
         return getCategoryDTO;
     }
 
-    public ResponseCategoryDTO getCategory(Long memberId, Long categoryId) {
-        List<Category> categories = categoryRepository.findByMemberId(memberId);
-        for (Category category : categories) {
-            if (category.getId().equals(categoryId)) {
-                return ResponseCategoryDTO.builder()
-                        .categoryId(categoryId)
-                        .content(category.getContent())
-                        .color(category.getColor())
-                        .build();
-            }
-        }
-        throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_CATEGORY);
-    }
-
     public ResponseCategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
         categoryRepository.save(category);
-        todoService.updateCategory(ResponseCategoryDTO.builder() //member의 category 상태도 변경
-                .categoryId(categoryId)
+        todoService.updateCategory(categoryId, CategoryDTO.builder() //member의 category 상태도 변경
                 .content(category.getContent())
                 .color(category.getColor())
                 .build());

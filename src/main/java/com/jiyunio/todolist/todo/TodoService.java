@@ -98,8 +98,8 @@ public class TodoService {
                 .build();
     }
 
-    public void updateCategory(ResponseCategoryDTO categoryDTO) {
-        List<Todo> todoList = todoRepository.findByCategoryId(categoryDTO.getCategoryId());
+    public void updateCategory(Long categoryId, CategoryDTO categoryDTO) {
+        List<Todo> todoList = todoRepository.findByCategoryId(categoryId);
         for (Todo todo : todoList) {
             todo.updateCategory(categoryDTO);
             todoRepository.save(todo);

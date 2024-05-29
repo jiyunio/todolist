@@ -33,13 +33,6 @@ public class CategoryController {
         return categoryService.getCategories(memberId);
     }
 
-    @GetMapping("/{memberId}/{categoryId}")
-    @Operation(summary = "카테고리 조회")
-    public ResponseCategoryDTO getCategory(@Parameter(description = "member의 id") @PathVariable Long memberId,
-                                           @Parameter(description = "category의 id") @PathVariable Long categoryId) {
-        return categoryService.getCategory(memberId, categoryId);
-    }
-
     @PutMapping("/{categoryId}")
     @Operation(summary = "카테고리 수정")
     public ResponseEntity<ResponseCategoryDTO> updateCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {
