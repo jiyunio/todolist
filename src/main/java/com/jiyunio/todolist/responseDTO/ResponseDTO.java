@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.responseDTO;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResponseDTO {
+    @NotBlank
     String msg;
 
     @Builder

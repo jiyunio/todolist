@@ -1,6 +1,8 @@
 package com.jiyunio.todolist.responseDTO;
 
 import com.jiyunio.todolist.category.Category;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,11 +13,21 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ResponseTodoDTO {
+    @NotNull
     private Long todoId;
+
+    @NotBlank
     private String content;
+
     private boolean checked;
+
+    @NotNull
     private LocalDate writeDate;
+
+    @NotNull
     private LocalDate setDate;
+
+    @NotNull
     private ResponseCategoryDTO category;
 
     @Builder
