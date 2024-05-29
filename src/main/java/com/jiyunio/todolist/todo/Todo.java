@@ -35,7 +35,6 @@ public class Todo {
 
     private LocalDate setDate;
 
-    private String color;
 
     @Builder
     protected Todo(Member member, String content, Boolean checked, String category,

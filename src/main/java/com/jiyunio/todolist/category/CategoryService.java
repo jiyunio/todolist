@@ -5,15 +5,18 @@ import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.todo.Todo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
@@ -55,6 +58,8 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
         categoryRepository.save(category);
+
+        List<Todo> todoList = category.getTodo();
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())
