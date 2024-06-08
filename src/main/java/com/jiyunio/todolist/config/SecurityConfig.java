@@ -36,7 +36,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
-                        .requestMatchers("http://na2ru2.me:5151/**", "/v3/**").permitAll()
+                        .requestMatchers("http://na2ru2.me:5151/swagger-ui/index.html#/**", "/v3/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -49,5 +49,4 @@ public class SecurityConfig {
         //AuthenticationProvider로 Custom 메소드 이용
         return new CustomAuthenticationProvider(userDetailsService, passwordEncoder());
     }
-
 }
