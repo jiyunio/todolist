@@ -9,6 +9,9 @@ public enum ErrorCode {
     WRONG_USERID_PASSWORD("400_Bad_Request", "아이디 및 비밀번호가 맞지 않습니다."),
     NO_ANYMORE_CATEGORY("400_Bad_Request", "카테고리는 1개 이상이어야 합니다."),
 
+    // 401 AUTHORIZATION
+    NO_AUTHORIZATION("401_AUTHORIZATION", "접근 권한이 없습니다."),
+
     // 404 Not Found
     NOT_EXIST_MEMBER("404_Not_Found", "회원이 존재하지 않습니다."),
     NOT_EXIST_TODO("404_Not_Found", "TODO가 존재하지 않습니다."),

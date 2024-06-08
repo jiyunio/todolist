@@ -2,6 +2,7 @@ package com.jiyunio.todolist.member;
 
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorDTO;
+import com.jiyunio.todolist.jwt.JwtDTO;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
@@ -43,7 +44,7 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 및 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseMemberDTO> signIn(@Valid @RequestBody SignInDTO signInDto) {
+    public ResponseEntity<JwtDTO> signIn(@Valid @RequestBody SignInDTO signInDto) {
         return ResponseEntity.ok(memberService.signIn(signInDto));
     }
 

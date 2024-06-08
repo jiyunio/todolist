@@ -1,9 +1,6 @@
 package com.jiyunio.todolist.todo.dto;
 
-import com.jiyunio.todolist.category.Category;
-import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
-import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,10 +16,6 @@ public class CreateTodoDTO {
     @NotBlank(message = "todo를 작성해주세요.")
     @Schema(description = "todo 내용", example = "친구랑 치킨집")
     private String content;
-
-    @NotNull(message = "작성 일자를 선택해주세요.")
-    @Schema(description = "todo 작성 일자", example = "YYYY-MM-DD")
-    private LocalDate writeDate;
 
     @NotNull(message = "설정 일자를 선택해주세요.")
     @Schema(description = "todo 설정 일자", example = "YYYY-MM-DD")

@@ -29,8 +29,6 @@ public class Todo {
 
     private Boolean checked;
 
-    private LocalDate writeDate;
-
     private LocalDate setDate;
 
     private Long categoryId;
@@ -41,12 +39,11 @@ public class Todo {
 
 
     @Builder
-    protected Todo(Member member, String content, Boolean checked, LocalDate writeDate, LocalDate setDate,
+    protected Todo(Member member, String content, Boolean checked, LocalDate setDate,
                    Long categoryId, String categoryContent, String categoryColor) {
         this.member = member;
         this.content = content;
         this.checked = checked;
-        this.writeDate = writeDate;
         this.setDate = setDate;
         this.categoryId = categoryId;
         this.categoryContent = categoryContent;
@@ -56,7 +53,6 @@ public class Todo {
     protected void updateTodo(UpdateTodoDTO updateTodoDto) {
         this.content = updateTodoDto.getContent();
         this.checked = updateTodoDto.getChecked();
-        this.writeDate = updateTodoDto.getWriteDate();
         this.setDate = updateTodoDto.getSetDate();
     }
 

@@ -1,7 +1,6 @@
 package com.jiyunio.todolist.todo.dto;
 
 import com.jiyunio.todolist.category.CategoryDTO;
-import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,10 +22,6 @@ public class UpdateTodoDTO {
     @Schema(description = "todo checked", example = "true")
     private Boolean checked;
 
-    @NotNull(message = "작성 일자를 선택해주세요.")
-    @Schema(description = "todo 작성 일자", example = "YYYY-MM-DD")
-    private LocalDate writeDate;
-
     @NotNull(message = "설정 일자를 선택해주세요.")
     @Schema(description = "todo 설정 일자", example = "YYYY-MM-DD")
     private LocalDate setDate;
@@ -36,11 +31,10 @@ public class UpdateTodoDTO {
     private CategoryDTO category;
 
     @Builder
-    protected UpdateTodoDTO(String content, Boolean checked, LocalDate writeDate, LocalDate setDate,
+    protected UpdateTodoDTO(String content, Boolean checked, LocalDate setDate,
                             CategoryDTO category) {
         this.content = content;
         this.checked = checked;
-        this.writeDate = writeDate;
         this.setDate = setDate;
         this.category = category;
     }

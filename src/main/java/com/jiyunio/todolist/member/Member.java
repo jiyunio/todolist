@@ -19,10 +19,13 @@ public class Member {
 
     private String userPw;
 
+    private String role;
+
     @Builder
     protected Member(String userId, String userPw) {
         this.userId = userId;
         this.userPw = userPw;
+        this.role = "ROLE_USER";
     }
 
     protected void updateUserPw(String userPw) {

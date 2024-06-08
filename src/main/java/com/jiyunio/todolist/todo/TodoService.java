@@ -1,7 +1,6 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.CategoryDTO;
-import com.jiyunio.todolist.category.CategoryRepository;
 import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
@@ -22,7 +21,6 @@ import java.util.List;
 public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
-    private final CategoryRepository categoryRepository;
 
     public ResponseTodoDTO createTodo(Long memberId, CreateTodoDTO createTodo) {
         Member member = memberRepository.findById(memberId).orElseThrow(
@@ -33,7 +31,6 @@ public class TodoService {
         Todo todo = Todo.builder()
                 .member(member)
                 .content(createTodo.getContent())
-                .writeDate(createTodo.getWriteDate())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
                 .categoryId(createTodo.getCategory().getCategoryId())
@@ -47,7 +44,6 @@ public class TodoService {
                 .todoId(todo.getId())
                 .content(todo.getContent())
                 .checked(todo.getChecked())
-                .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
                 .category(ResponseCategoryDTO.builder()
                         .categoryId(todo.getCategoryId())
@@ -69,7 +65,6 @@ public class TodoService {
             getTodoList.add(ResponseTodoDTO.builder()
                     .todoId(todo.getId())
                     .content(todo.getContent())
-                    .writeDate(todo.getWriteDate())
                     .setDate(todo.getSetDate())
                     .checked(todo.getChecked())
                     .category(ResponseCategoryDTO.builder()
@@ -91,7 +86,6 @@ public class TodoService {
                 .todoId(todo.getId())
                 .content(todo.getContent())
                 .checked(todo.getChecked())
-                .writeDate(todo.getWriteDate())
                 .setDate(todo.getSetDate())
                 .category(ResponseCategoryDTO.builder()
                         .categoryId(todo.getCategoryId())
