@@ -15,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsUtils;
 
 @EnableWebSecurity
 @Configuration
@@ -35,8 +34,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
                         .requestMatchers("http://na2ru2.me:5151/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
