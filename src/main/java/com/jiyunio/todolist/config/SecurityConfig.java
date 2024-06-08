@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("http://na2ru2.me:5151/swagger-ui/**", "/v3/**").permitAll()
+                        .requestMatchers("swagger-ui/**", "/v3/**").permitAll()
                         .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
