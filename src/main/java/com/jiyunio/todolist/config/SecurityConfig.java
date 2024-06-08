@@ -36,7 +36,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
-                        .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("http://na2ru2.me:5151/**", "/v3/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
