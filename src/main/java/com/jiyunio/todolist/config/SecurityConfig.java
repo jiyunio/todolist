@@ -35,10 +35,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll())
-//                        .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
-//                        .requestMatchers("http://na2ru2.me:5151/**", "/v3/**").permitAll()
-//                        .anyRequest().authenticated())
+                        .requestMatchers("/member/sign-up", "/member/sign-in").permitAll()
+                        .requestMatchers("http://na2ru2.me:5151/swagger-ui/**", "/v3/**").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
