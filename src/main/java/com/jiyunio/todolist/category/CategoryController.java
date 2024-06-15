@@ -1,9 +1,9 @@
 package com.jiyunio.todolist.category;
 
 import com.jiyunio.todolist.customError.ErrorDTO;
+import com.jiyunio.todolist.jwt.CustomUserDetails;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseDTO;
-import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,22 +27,22 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @PostMapping("/{memberId}")
+    @PostMapping("")
     @Operation(summary = "카테고리 생성")
     @ApiResponse(responseCode = "200", description = "카테고리 생성 성공", content = @Content(schema = @Schema(implementation = ResponseCategoryDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseCategoryDTO> createCategory(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestBody CategoryDTO categoryDTO) {
-        return new ResponseEntity<>(categoryService.createCategory(memberId, categoryDTO), HttpStatus.CREATED);
+    public ResponseEntity<ResponseCategoryDTO> createCategory(@AuthenticationPrincipal CustomUserDetails user, @RequestBody CategoryDTO categoryDTO) {
+        return new ResponseEntity<>(categoryService.createCategory(user.getUsername(), categoryDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping("/categories/{memberId}")
+    @GetMapping("/categories")
     @Operation(summary = "카테고리 전체 조회")
     @ApiResponse(responseCode = "200", description = "카테고리 전체 조회 성공", content = @Content(schema = @Schema(implementation = ResponseCategoryDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public List<ResponseCategoryDTO> getCategories(@Parameter(description = "member의 id") @PathVariable Long memberId) {
-        return categoryService.getCategories(memberId);
+    public List<ResponseCategoryDTO> getCategories(@AuthenticationPrincipal CustomUserDetails user) {
+        return categoryService.getCategories(user.getUsername());
     }
 
     @PutMapping("/{categoryId}")

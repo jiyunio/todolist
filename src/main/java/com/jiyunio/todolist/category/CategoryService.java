@@ -5,9 +5,7 @@ import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
-import com.jiyunio.todolist.todo.TodoRepository;
 import com.jiyunio.todolist.todo.TodoService;
-import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,17 +22,12 @@ public class CategoryService {
     private final MemberRepository memberRepository;
     private final TodoService todoService;
 
-    public ResponseCategoryDTO createCategory(Long memberId, CategoryDTO categoryDTO) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                // 회원 존재 안함
-                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
-        );
-
-
+    public ResponseCategoryDTO createCategory(String userId, CategoryDTO categoryDTO) {
+        Member member = memberRepository.findByUserId(userId).get();
         Category category = Category.builder()
-                .member(member)
                 .content(categoryDTO.getContent())
                 .color(categoryDTO.getColor())
+                .userId(member.getUserId())
                 .build();
         categoryRepository.save(category);
 
@@ -45,9 +38,9 @@ public class CategoryService {
                 .build();
     }
 
-    public List<ResponseCategoryDTO> getCategories(Long memberId) {
-        List<Category> categories = categoryRepository.findByMemberId(memberId);
-        if(categories == null){
+    public List<ResponseCategoryDTO> getCategories(String userId) {
+        List<Category> categories = categoryRepository.findByUserId(userId);
+        if (categories == null) {
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
         }
         List<ResponseCategoryDTO> getCategoryDTO = new ArrayList<>();
@@ -84,6 +77,13 @@ public class CategoryService {
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NO_ANYMORE_CATEGORY);
         } else {
             categoryRepository.deleteById(categoryId);
+        }
+    }
+
+    public void deleteCategories(String userId) {
+        List<ResponseCategoryDTO> categoryList = getCategories(userId);
+        for (ResponseCategoryDTO category : categoryList) {
+            categoryRepository.deleteById(category.getCategoryId());
         }
     }
 }

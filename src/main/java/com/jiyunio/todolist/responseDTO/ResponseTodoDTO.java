@@ -1,14 +1,11 @@
 package com.jiyunio.todolist.responseDTO;
 
-import com.jiyunio.todolist.category.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -27,10 +24,6 @@ public class ResponseTodoDTO {
     private boolean checked;
 
     @NotNull
-    @Schema(description = "todo 작성 날짜", example = "YYYY-MM-DD")
-    private LocalDate writeDate;
-
-    @NotNull
     @Schema(description = "todo 설정 날짜", example = "YYYY-MM-DD")
     private LocalDate setDate;
 
@@ -39,12 +32,10 @@ public class ResponseTodoDTO {
     private ResponseCategoryDTO category;
 
     @Builder
-    protected ResponseTodoDTO(Long todoId, String content, boolean checked,
-                               LocalDate writeDate, LocalDate setDate, ResponseCategoryDTO category){
+    protected ResponseTodoDTO(Long todoId, String content, boolean checked, LocalDate setDate, ResponseCategoryDTO category) {
         this.todoId = todoId;
         this.content = content;
         this.checked = checked;
-        this.writeDate = writeDate;
         this.setDate = setDate;
         this.category = category;
     }

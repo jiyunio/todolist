@@ -23,7 +23,7 @@ public class ResponseCategoryDTO {
     private String color;
 
     @Builder
-    protected ResponseCategoryDTO(Long categoryId, String content, String color){
+    protected ResponseCategoryDTO(Long categoryId, String content, String color) {
         this.categoryId = categoryId;
         this.content = content;
         this.color = color;

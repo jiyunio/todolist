@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +22,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userId = authentication.getName();
-        String userPw = (String)authentication.getCredentials();
+        String userPw = (String) authentication.getCredentials();
         UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-        if(userDetails == null || !passwordEncoder.matches(userPw, userDetails.getPassword())){
-            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
+        if (userDetails == null || !passwordEncoder.matches(userPw, userDetails.getPassword())) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.WRONG_USERID_PASSWORD);
         }
         //인증 완료
         return new UsernamePasswordAuthenticationToken(userId, "", userDetails.getAuthorities());

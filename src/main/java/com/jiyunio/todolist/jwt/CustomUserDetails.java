@@ -2,7 +2,6 @@ package com.jiyunio.todolist.jwt;
 
 import com.jiyunio.todolist.member.Member;
 import lombok.Builder;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

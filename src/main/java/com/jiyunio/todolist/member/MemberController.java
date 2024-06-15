@@ -1,7 +1,7 @@
 package com.jiyunio.todolist.member;
 
-import com.jiyunio.todolist.customError.CustomException;
 import com.jiyunio.todolist.customError.ErrorDTO;
+import com.jiyunio.todolist.jwt.CustomUserDetails;
 import com.jiyunio.todolist.jwt.JwtDTO;
 import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
@@ -9,7 +9,6 @@ import com.jiyunio.todolist.member.dto.SignUpDTO;
 import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,9 +17,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.annotation.Target;
 import java.util.List;
 
 @RestController
@@ -55,21 +54,21 @@ public class MemberController {
         return memberService.getMembers();
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("")
     @Operation(summary = "회원 비밀번호 수정", description = "비밀번호, 수정 비밀번호 이용")
     @ApiResponse(responseCode = "200", description = "비밀번호 업데이터 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 및 비밀번호 불일치 / 변경 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseMemberDTO> updateUserPw(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
-        return ResponseEntity.ok(memberService.updateUserPw(memberId, changeUserPwDto));
+    public ResponseEntity<ResponseMemberDTO> updateUserPw(@AuthenticationPrincipal CustomUserDetails user, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
+        return ResponseEntity.ok(memberService.updateUserPw(user.getUsername(), changeUserPwDto));
     }
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping("")
     @Operation(summary = "회원 탈퇴", description = "비밀번호 이용")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseDTO> deleteMember(@Parameter(description = "member의 id") @PathVariable Long memberId, @RequestParam String userPw) {
-        memberService.deleteMember(memberId, userPw);
+    public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user, @RequestParam String userPw) {
+        memberService.deleteMember(user.getUsername(), userPw);
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
                 .build());

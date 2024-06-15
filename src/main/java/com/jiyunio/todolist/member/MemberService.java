@@ -11,6 +11,7 @@ import com.jiyunio.todolist.member.dto.ChangeUserPwDTO;
 import com.jiyunio.todolist.member.dto.SignInDTO;
 import com.jiyunio.todolist.member.dto.SignUpDTO;
 import com.jiyunio.todolist.responseDTO.ResponseMemberDTO;
+import com.jiyunio.todolist.todo.TodoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final TodoService todoService;
     private final CategoryService categoryService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final CustomAuthenticationProvider authenticationProvider;
@@ -39,7 +41,6 @@ public class MemberService {
 
         if (signUpDto.getUserPw().equals(signUpDto.getConfirmUserPw())) {
             // 회원가입 성공
-
             Member member = Member.builder()
                     .userId(signUpDto.getUserId())
                     .userPw(passwordEncoder.encode(signUpDto.getUserPw()))
@@ -48,7 +49,7 @@ public class MemberService {
             memberRepository.save(member);
 
             //기본 카테고리 동시에 생성
-            categoryService.createCategory(member.getId(), CategoryDTO.builder()
+            categoryService.createCategory(member.getUserId(), CategoryDTO.builder()
                     .content("기본")
                     .color("FFFFFF").build());
 
@@ -62,28 +63,15 @@ public class MemberService {
     }
 
     public JwtDTO signIn(@Valid SignInDTO signInDto) {
-//        if (memberRepository.existsByUserId(signInDto.getUserId())) {
-//            Member member = memberRepository.findByUserId(signInDto.getUserId()).get();
-//            if (passwordEncoder.matches(signInDto.getUserPw(), member.getUserPw())) {
-//                // 로그인 성공
-//                return ResponseMemberDTO.builder()
-//                        .memberId(member.getId())
-//                        .userId(member.getUserId())
-//                        .build();
-//            }
-//        }
-//        // 아이디 및 회원 비밀번호 불일치
-//        throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(signInDto.getUserId(), signInDto.getUserPw());
         Authentication authentication = authenticationProvider.authenticate(authenticationToken);
-        JwtDTO jwtDTO = jwtProvider.createToken(authentication);
-        return jwtDTO;
+        return jwtProvider.createToken(authentication);
     }
 
     public List<ResponseMemberDTO> getMembers() {
         List<Member> members = memberRepository.findAll();
         List<ResponseMemberDTO> getMembers = new ArrayList<>();
-        for (Member member: members) {
+        for (Member member : members) {
             getMembers.add(ResponseMemberDTO.builder()
                     .memberId(member.getId())
                     .userId(member.getUserId())
@@ -92,12 +80,14 @@ public class MemberService {
         return getMembers;
     }
 
-    public ResponseMemberDTO updateUserPw(Long id, @Valid ChangeUserPwDTO changeUserPwDto) {
-        Member member = memberRepository.findById(id).get();
-        if (member.getUserPw().equals(changeUserPwDto.getUserPw())) { // 회원 비밀번호 확인
+    public ResponseMemberDTO updateUserPw(String userId, @Valid ChangeUserPwDTO changeUserPwDto) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
+        );
+        if (passwordEncoder.matches(changeUserPwDto.getUserPw(), member.getUserPw())) { // 회원 비밀번호 확인
             if (changeUserPwDto.getChangePw().equals(changeUserPwDto.getConfirmChangePw())) {
                 // 비밀번호 업데이트 성공
-                member.updateUserPw(changeUserPwDto.getChangePw());
+                member.updateUserPw(passwordEncoder.encode(changeUserPwDto.getChangePw()));
                 memberRepository.save(member);
 
                 return ResponseMemberDTO.builder()
@@ -114,11 +104,14 @@ public class MemberService {
         }
     }
 
-    public void deleteMember(Long id, String userPw) {
-        Member member = memberRepository.findById(id).get();
-        if (member.getUserPw().equals(userPw)) {
-            // 회원 탈퇴 성공
-            memberRepository.deleteById(id);
+    public void deleteMember(String userId, String userPw) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
+        );
+        if (passwordEncoder.matches(userPw, member.getUserPw())) { // 회원 탈퇴 성공
+            todoService.deleteTodos(userId);
+            categoryService.deleteCategories(userId);
+            memberRepository.deleteById(member.getId());
         } else {
             // 비밀번호 불일치
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);

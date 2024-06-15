@@ -1,14 +1,10 @@
 package com.jiyunio.todolist.category;
 
-import com.jiyunio.todolist.member.Member;
-import com.jiyunio.todolist.todo.Todo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,19 +15,17 @@ public class Category {
     @Column(name = "categoryId")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private Member member;
-
     private String content;
 
     private String color;
 
+    private String userId;
+
     @Builder
-    protected Category(Member member, String content, String color) {
-        this.member = member;
+    protected Category(String content, String color, String userId) {
         this.content = content;
         this.color = color;
+        this.userId = userId;
     }
 
     protected void updateCategory(CategoryDTO categoryDTO) {

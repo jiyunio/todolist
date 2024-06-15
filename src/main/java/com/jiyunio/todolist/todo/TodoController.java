@@ -1,7 +1,7 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.customError.ErrorDTO;
-import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.jwt.CustomUserDetails;
 import com.jiyunio.todolist.responseDTO.ResponseDTO;
 import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
 import com.jiyunio.todolist.todo.dto.CreateTodoDTO;
@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,22 +28,22 @@ import java.util.List;
 public class TodoController {
     private final TodoService todoService;
 
-    @PostMapping("/{memberId}")
+    @PostMapping("")
     @Operation(summary = "todo 생성")
     @ApiResponse(responseCode = "200", description = "todo 생성 성공", content = @Content(schema = @Schema(implementation = ResponseTodoDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseTodoDTO> createTodo(@Parameter(description = "member의 id") @PathVariable Long memberId, @Valid @RequestBody CreateTodoDTO createTodo) {
-        return new ResponseEntity<>(todoService.createTodo(memberId, createTodo), HttpStatus.CREATED);
+    public ResponseEntity<ResponseTodoDTO> createTodo(@AuthenticationPrincipal CustomUserDetails user, @Valid @RequestBody CreateTodoDTO createTodo) {
+        return new ResponseEntity<>(todoService.createTodo(user.getUsername(), createTodo), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/todos")
     @Operation(summary = "todo 조회")
     @ApiResponse(responseCode = "200", description = "todo 조회 성공", content = @Content(schema = @Schema(implementation = ResponseTodoDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 X (memberId 없음)", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public List<ResponseTodoDTO> getTodo(@Parameter(description = "member의 id") @PathVariable Long memberId) {
-        return todoService.getTodo(memberId);
+    public List<ResponseTodoDTO> getTodo(@AuthenticationPrincipal CustomUserDetails user) {
+        return todoService.getTodo(user.getUsername());
     }
 
     @PutMapping("/{todoId}")

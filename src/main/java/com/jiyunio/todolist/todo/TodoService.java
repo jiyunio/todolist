@@ -22,14 +22,14 @@ public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
 
-    public ResponseTodoDTO createTodo(Long memberId, CreateTodoDTO createTodo) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
+    public ResponseTodoDTO createTodo(String userId, CreateTodoDTO createTodo) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
 
         Todo todo = Todo.builder()
-                .member(member)
+                .userId(member.getUserId())
                 .content(createTodo.getContent())
                 .setDate(createTodo.getSetDate())
                 .checked(false)
@@ -53,8 +53,8 @@ public class TodoService {
                 .build();
     }
 
-    public List<ResponseTodoDTO> getTodo(Long memberId) {
-        List<Todo> todoList = todoRepository.findByMemberId(memberId);
+    public List<ResponseTodoDTO> getTodo(String userId) {
+        List<Todo> todoList = todoRepository.findByUserId(userId);
         if (todoList == null) {
             throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
         }
@@ -97,13 +97,24 @@ public class TodoService {
 
     public void updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         List<Todo> todoList = todoRepository.findByCategoryId(categoryId);
-        for (Todo todo : todoList) {
-            todo.updateCategory(categoryDTO);
-            todoRepository.save(todo);
+        if (todoList.isEmpty()) {
+            return;
+        } else {
+            for (Todo todo : todoList) {
+                todo.updateCategory(categoryDTO);
+                todoRepository.save(todo);
+            }
         }
     }
 
     public void deleteTodo(Long todoId) {
         todoRepository.deleteById(todoId);
+    }
+
+    public void deleteTodos(String userId) {
+        List<ResponseTodoDTO> todoList = getTodo(userId);
+        for (ResponseTodoDTO todo : todoList) {
+            todoRepository.deleteById(todo.getTodoId());
+        }
     }
 }

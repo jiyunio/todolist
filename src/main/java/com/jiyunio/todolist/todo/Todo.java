@@ -1,7 +1,6 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.CategoryDTO;
-import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,9 +19,7 @@ public class Todo {
     @Column(name = "todoId")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
-    private Member member;
+    private String userId;
 
     @Lob // 길이 제한 X
     private String content;
@@ -39,9 +36,9 @@ public class Todo {
 
 
     @Builder
-    protected Todo(Member member, String content, Boolean checked, LocalDate setDate,
+    protected Todo(String userId, String content, Boolean checked, LocalDate setDate,
                    Long categoryId, String categoryContent, String categoryColor) {
-        this.member = member;
+        this.userId = userId;
         this.content = content;
         this.checked = checked;
         this.setDate = setDate;
