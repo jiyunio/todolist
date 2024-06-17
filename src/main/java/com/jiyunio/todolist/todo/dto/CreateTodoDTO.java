@@ -1,6 +1,5 @@
 package com.jiyunio.todolist.todo.dto;
 
-import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +21,6 @@ public class CreateTodoDTO {
     private LocalDate setDate;
 
     @NotNull
-    @Schema(description = "category")
-    private ResponseCategoryDTO category;
+    @Schema(description = "category Id", example = "1")
+    private Long categoryId;
 }

@@ -55,8 +55,8 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "카테고리 삭제")
     @ApiResponse(responseCode = "200", description = "카테고리 삭제 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
-    public ResponseEntity<ResponseDTO> deleteCategory(@Parameter(description = "카테고리의 id") @PathVariable Long categoryId) {
-        categoryService.deleteCategory(categoryId);
+    public ResponseEntity<ResponseDTO> deleteCategory(@AuthenticationPrincipal CustomUserDetails user, @Parameter(description = "카테고리의 id") @PathVariable Long categoryId) {
+        categoryService.deleteCategory(user.getUsername(), categoryId);
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("카테고리 삭제 성공")
                 .build());

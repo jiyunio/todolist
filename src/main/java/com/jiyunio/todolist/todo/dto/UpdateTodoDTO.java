@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.todo.dto;
 
 import com.jiyunio.todolist.category.CategoryDTO;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,15 +28,15 @@ public class UpdateTodoDTO {
     private LocalDate setDate;
 
     @NotNull
-    @Schema(description = "category")
-    private CategoryDTO category;
+    @Schema(description = "category Id", example = "1")
+    private Long categoryId;
 
     @Builder
     protected UpdateTodoDTO(String content, Boolean checked, LocalDate setDate,
-                            CategoryDTO category) {
+                            Long categoryId) {
         this.content = content;
         this.checked = checked;
         this.setDate = setDate;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 }

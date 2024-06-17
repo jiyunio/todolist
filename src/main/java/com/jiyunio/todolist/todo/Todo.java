@@ -1,6 +1,7 @@
 package com.jiyunio.todolist.todo;
 
 import com.jiyunio.todolist.category.CategoryDTO;
+import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -53,8 +54,9 @@ public class Todo {
         this.setDate = updateTodoDto.getSetDate();
     }
 
-    protected void updateCategory(CategoryDTO categoryDTO) {
-        this.categoryContent = categoryDTO.getContent();
+    protected void updateCategory(ResponseCategoryDTO categoryDTO) {
+        this.categoryId = categoryDTO.getCategoryId();
+;        this.categoryContent = categoryDTO.getContent();
         this.categoryColor = categoryDTO.getColor();
     }
 }

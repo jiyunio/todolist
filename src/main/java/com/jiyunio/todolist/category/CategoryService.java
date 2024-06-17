@@ -5,6 +5,8 @@ import com.jiyunio.todolist.customError.ErrorCode;
 import com.jiyunio.todolist.member.Member;
 import com.jiyunio.todolist.member.MemberRepository;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
+import com.jiyunio.todolist.responseDTO.ResponseTodoDTO;
+import com.jiyunio.todolist.todo.TodoRepository;
 import com.jiyunio.todolist.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,13 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class CategoryService {
-    private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
+    private final TodoRepository todoRepository;
+    private final CategoryRepository categoryRepository;
     private final TodoService todoService;
 
     public ResponseCategoryDTO createCategory(String userId, CategoryDTO categoryDTO) {
@@ -59,10 +63,13 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId).get();
         category.updateCategory(categoryDTO);
         categoryRepository.save(category);
-        todoService.updateCategory(categoryId, CategoryDTO.builder() //member의 category 상태도 변경
-                .content(category.getContent())
-                .color(category.getColor())
-                .build());
+
+        //member의 category 상태도 변경
+        todoService.updateCategory(ResponseCategoryDTO.builder()
+                .categoryId(categoryId)
+                .content(categoryDTO.getContent())
+                .color(categoryDTO.getColor()).build());
+
 
         return ResponseCategoryDTO.builder()
                 .categoryId(category.getId())
@@ -71,11 +78,18 @@ public class CategoryService {
                 .build();
     }
 
-    public void deleteCategory(Long categoryId) {
+    public void deleteCategory(String userId, Long categoryId) {
         if (categoryRepository.count() == 1) {
             //카데고리 개수 >= 1
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NO_ANYMORE_CATEGORY);
         } else {
+            // 카테고리 삭제시, 관련 todo도 함께 삭제
+            List<ResponseTodoDTO> todoList = todoService.getTodo(userId);
+            for (ResponseTodoDTO todo : todoList) {
+                if (Objects.equals(todo.getCategory().getCategoryId(), categoryId)) {
+                    todoRepository.deleteById(todo.getTodoId());
+                }
+            }
             categoryRepository.deleteById(categoryId);
         }
     }
