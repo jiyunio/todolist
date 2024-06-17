@@ -20,9 +20,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -68,16 +65,12 @@ public class MemberService {
         return jwtProvider.createToken(authentication);
     }
 
-    public List<ResponseMemberDTO> getMembers() {
-        List<Member> members = memberRepository.findAll();
-        List<ResponseMemberDTO> getMembers = new ArrayList<>();
-        for (Member member : members) {
-            getMembers.add(ResponseMemberDTO.builder()
-                    .memberId(member.getId())
-                    .userId(member.getUserId())
-                    .build());
-        }
-        return getMembers;
+    public ResponseMemberDTO getMember(String userId) {
+        Member member = memberRepository.findByUserId(userId).get();
+        return ResponseMemberDTO.builder()
+                .memberId(member.getId())
+                .userId(member.getUserId())
+                .build();
     }
 
     public ResponseMemberDTO updateUserPw(String userId, @Valid ChangeUserPwDTO changeUserPwDto) {

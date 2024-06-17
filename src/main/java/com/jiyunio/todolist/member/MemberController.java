@@ -47,11 +47,11 @@ public class MemberController {
         return ResponseEntity.ok(memberService.signIn(signInDto));
     }
 
-    @GetMapping("/members")
-    @Operation(summary = "회원 전체 조회")
+    @GetMapping("")
+    @Operation(summary = "회원 조회")
     @ApiResponse(responseCode = "200", description = "회원 조회 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
-    public List<ResponseMemberDTO> getMember() {
-        return memberService.getMembers();
+    public ResponseEntity<ResponseMemberDTO> getMember(@AuthenticationPrincipal CustomUserDetails user) {
+        return ResponseEntity.ok(memberService.getMember(user.getUsername()));
     }
 
     @PutMapping("")
