@@ -97,17 +97,12 @@ public class MemberService {
         }
     }
 
-    public void deleteMember(String userId, String userPw) {
+    public void deleteMember(String userId) {
         Member member = memberRepository.findByUserId(userId).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
-        if (passwordEncoder.matches(userPw, member.getUserPw())) { // 회원 탈퇴 성공
-            todoService.deleteTodos(userId);
-            categoryService.deleteCategories(userId);
-            memberRepository.deleteById(member.getId());
-        } else {
-            // 비밀번호 불일치
-            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
-        }
+        todoService.deleteTodos(userId);
+        categoryService.deleteCategories(userId);
+        memberRepository.deleteById(member.getId());
     }
 }

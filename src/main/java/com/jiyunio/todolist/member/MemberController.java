@@ -67,8 +67,8 @@ public class MemberController {
     @Operation(summary = "회원 탈퇴", description = "비밀번호 이용")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user, @RequestParam String userPw) {
-        memberService.deleteMember(user.getUsername(), userPw);
+    public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user) {
+        memberService.deleteMember(user.getUsername());
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
                 .build());
