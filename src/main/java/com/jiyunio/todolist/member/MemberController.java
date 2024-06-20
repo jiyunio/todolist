@@ -64,7 +64,7 @@ public class MemberController {
     }
 
     @DeleteMapping("")
-    @Operation(summary = "회원 탈퇴", description = "비밀번호 이용")
+    @Operation(summary = "회원 탈퇴")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
     @ApiResponse(responseCode = "404", description = "회원 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user) {
