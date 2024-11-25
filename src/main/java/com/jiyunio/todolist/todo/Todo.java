@@ -1,6 +1,5 @@
 package com.jiyunio.todolist.todo;
 
-import com.jiyunio.todolist.category.CategoryDTO;
 import com.jiyunio.todolist.responseDTO.ResponseCategoryDTO;
 import com.jiyunio.todolist.todo.dto.UpdateTodoDTO;
 import jakarta.persistence.*;
@@ -17,7 +16,7 @@ import java.time.LocalDate;
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "todoId")
+    @Column(name = "todo_id")
     private Long id;
 
     private String userId;
@@ -37,7 +36,7 @@ public class Todo {
 
 
     @Builder
-    protected Todo(String userId, String content, Boolean checked, LocalDate setDate,
+    private Todo(String userId, String content, Boolean checked, LocalDate setDate,
                    Long categoryId, String categoryContent, String categoryColor) {
         this.userId = userId;
         this.content = content;
@@ -56,7 +55,7 @@ public class Todo {
 
     protected void updateCategory(ResponseCategoryDTO categoryDTO) {
         this.categoryId = categoryDTO.getCategoryId();
-;        this.categoryContent = categoryDTO.getContent();
+        this.categoryContent = categoryDTO.getContent();
         this.categoryColor = categoryDTO.getColor();
     }
 }

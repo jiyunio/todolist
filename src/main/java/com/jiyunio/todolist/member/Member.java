@@ -1,20 +1,19 @@
 package com.jiyunio.todolist.member;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
+    @Column(name = "member_id")
     private Long id;
 
+    @Column(columnDefinition = "text")
     private String userId;
 
     private String userPw;
@@ -22,7 +21,7 @@ public class Member {
     private String role;
 
     @Builder
-    protected Member(String userId, String userPw) {
+    private Member(String userId, String userPw) {
         this.userId = userId;
         this.userPw = userPw;
         this.role = "ROLE_USER";

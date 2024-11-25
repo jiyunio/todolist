@@ -51,6 +51,7 @@ public class JwtProvider {
         return new JwtDTO(accessToken);
     }
 
+    //SecurityContext에 인증된 클라이언트의 Authentication를 저장하기 위해 사용됨
     public Authentication getAuthentication(String accessToken) {
         //인증 객체 반환 (로그인 이외의 토큰 인증할 때 "Jwt 필터" 에서 이용)
         Claims claims = parseClaims(accessToken);

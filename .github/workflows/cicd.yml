@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       - name: Set Java
         uses: actions/setup-java@v3
@@ -50,5 +50,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script_stop: true
-          script: |
+          script: | 
             sh deploy/deploy.sh
