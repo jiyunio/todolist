@@ -20,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -72,6 +70,13 @@ public class MemberController {
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
                 .build());
+    }
+
+    //test
+    @GetMapping("/app-link")
+    public String redirectToYouTube() {
+        // YouTube 앱 딥링크로 리다이렉트
+        return "redirect:youtube://-BjZmE2gtdo";
     }
 }
 
