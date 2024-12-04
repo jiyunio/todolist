@@ -15,10 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -74,9 +77,12 @@ public class MemberController {
 
     //test
     @GetMapping("/app-link")
-    public String redirectToYouTube() {
+    public ResponseEntity<?> redirectToYouTube() {
         // YouTube 앱 딥링크로 리다이렉트
-        return "redirect:youtube://-BjZmE2gtdo";
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create("youtube://-BjZmE2gtdo"));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+
     }
 }
 
