@@ -24,4 +24,8 @@ public class SignUpDTO {
     @NotBlank(message = "확인 비밀번호를 입력하세요.")
     @Schema(description = "회원 확인 비밀번호", example = "qwer123!")
     private String confirmUserPw;
+
+    @NotBlank(message = "닉네임을 입력하세요.")
+    @Schema(description = "닉네임", example = "곽두철")
+    private String nickname;
 }

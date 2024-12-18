@@ -19,9 +19,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
     private final TodoService todoService;
@@ -33,7 +35,7 @@ public class MemberService {
     public ResponseMemberDTO signUp(@Valid SignUpDTO signUpDto) {
         if (memberRepository.existsByUserId(signUpDto.getUserId())) {
             // 이미 존재하는 아이디
-            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.EXIST_USERID);
+            throw new CustomException(HttpStatus.CONFLICT, ErrorCode.EXIST_USERID);
         }
 
         if (signUpDto.getUserPw().equals(signUpDto.getConfirmUserPw())) {
@@ -41,6 +43,7 @@ public class MemberService {
             Member member = Member.builder()
                     .userId(signUpDto.getUserId())
                     .userPw(passwordEncoder.encode(signUpDto.getUserPw()))
+                    .nickname(signUpDto.getNickname())
                     .build();
 
             memberRepository.save(member);
@@ -53,6 +56,7 @@ public class MemberService {
             return ResponseMemberDTO.builder()
                     .memberId(member.getId())
                     .userId(member.getUserId())
+                    .nickname(member.getNickname())
                     .build();
         }
         // 비밀번호 불일치
@@ -70,22 +74,25 @@ public class MemberService {
         return ResponseMemberDTO.builder()
                 .memberId(member.getId())
                 .userId(member.getUserId())
+                .nickname(member.getNickname())
                 .build();
     }
+
 
     public ResponseMemberDTO updateUserPw(String userId, @Valid ChangeUserPwDTO changeUserPwDto) {
         Member member = memberRepository.findByUserId(userId).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
+
         if (passwordEncoder.matches(changeUserPwDto.getUserPw(), member.getUserPw())) { // 회원 비밀번호 확인
             if (changeUserPwDto.getChangePw().equals(changeUserPwDto.getConfirmChangePw())) {
                 // 비밀번호 업데이트 성공
                 member.updateUserPw(passwordEncoder.encode(changeUserPwDto.getChangePw()));
-                memberRepository.save(member);
 
                 return ResponseMemberDTO.builder()
                         .memberId(member.getId())
                         .userId(member.getUserId())
+                        .nickname(member.getNickname())
                         .build();
             } else {
                 // 변경 비밀번호 불일치
@@ -93,8 +100,21 @@ public class MemberService {
             }
         } else {
             // 회원의 비밀번호와 불일치
-            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.WRONG_USERID_PASSWORD);
+            throw new CustomException(HttpStatus.UNAUTHORIZED, ErrorCode.WRONG_USERID_PASSWORD);
         }
+    }
+
+    public ResponseMemberDTO updateNickname(String userId, String nickname) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
+        );
+        member.updateNickname(nickname);
+
+        return ResponseMemberDTO.builder()
+                .memberId(member.getId())
+                .userId(member.getUserId())
+                .nickname(member.getNickname())
+                .build();
     }
 
     public void deleteMember(String userId) {

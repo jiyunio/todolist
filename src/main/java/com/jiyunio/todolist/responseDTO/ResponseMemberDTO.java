@@ -18,9 +18,14 @@ public class ResponseMemberDTO {
     @Schema(description = "회원의 userId", example = "jiyun123")
     private String userId;
 
+    @NotBlank
+    @Schema(description = "회원의 userId", example = "jiyun123")
+    private String nickname;
+
     @Builder
-    protected ResponseMemberDTO(Long memberId, String userId) {
+    private ResponseMemberDTO(Long memberId, String userId, String nickname) {
         this.memberId = memberId;
         this.userId = userId;
+        this.nickname = nickname;
     }
 }

@@ -15,13 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class MemberController {
     @Operation(summary = "로그인", description = "아이디와 비밀번호 이용")
     @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    @ApiResponse(responseCode = "404", description = "회원 및 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+    @ApiResponse(responseCode = "401", description = "회원 및 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<JwtDTO> signIn(@Valid @RequestBody SignInDTO signInDto) {
         return ResponseEntity.ok(memberService.signIn(signInDto));
     }
@@ -59,30 +56,28 @@ public class MemberController {
     @Operation(summary = "회원 비밀번호 수정", description = "비밀번호, 수정 비밀번호 이용")
     @ApiResponse(responseCode = "200", description = "비밀번호 업데이터 성공", content = @Content(schema = @Schema(implementation = ResponseMemberDTO.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    @ApiResponse(responseCode = "404", description = "회원 및 비밀번호 불일치 / 변경 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+    @ApiResponse(responseCode = "401", description = "회원 및 비밀번호 불일치 / 변경 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<ResponseMemberDTO> updateUserPw(@AuthenticationPrincipal CustomUserDetails user, @Valid @RequestBody ChangeUserPwDTO changeUserPwDto) {
         return ResponseEntity.ok(memberService.updateUserPw(user.getUsername(), changeUserPwDto));
+    }
+
+    @PatchMapping("/{nickname}")
+    @Operation(summary = "닉네임 수정")
+    @ApiResponse(responseCode = "200", description = "닉네임 수정 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
+    @ApiResponse(responseCode = "404", description = "존재하지 않는 회원", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+    public ResponseEntity<ResponseMemberDTO> patchNickname(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String nickname) {
+        return ResponseEntity.ok(memberService.updateNickname(user.getUsername(), nickname));
     }
 
     @DeleteMapping("")
     @Operation(summary = "회원 탈퇴")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
-    @ApiResponse(responseCode = "404", description = "회원 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
+    @ApiResponse(responseCode = "404", description = "존재하지 않는 회원", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user) {
         memberService.deleteMember(user.getUsername());
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
                 .build());
-    }
-
-    //test
-    @GetMapping("/app-link")
-    public ResponseEntity<?> redirectToYouTube() {
-        // YouTube 앱 딥링크로 리다이렉트
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(URI.create("youtube://-BjZmE2gtdo"));
-        return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
-
     }
 }
 
