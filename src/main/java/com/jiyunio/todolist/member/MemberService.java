@@ -74,7 +74,6 @@ public class MemberService {
         return ResponseMemberDTO.builder()
                 .memberId(member.getId())
                 .userId(member.getUserId())
-                .nickname(member.getNickname())
                 .build();
     }
 
@@ -92,7 +91,6 @@ public class MemberService {
                 return ResponseMemberDTO.builder()
                         .memberId(member.getId())
                         .userId(member.getUserId())
-                        .nickname(member.getNickname())
                         .build();
             } else {
                 // 변경 비밀번호 불일치
@@ -113,7 +111,6 @@ public class MemberService {
         return ResponseMemberDTO.builder()
                 .memberId(member.getId())
                 .userId(member.getUserId())
-                .nickname(member.getNickname())
                 .build();
     }
 
