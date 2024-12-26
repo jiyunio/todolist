@@ -51,11 +51,14 @@ public class MemberController {
     @GetMapping("")
     @Operation(summary = "회원 조회")
     @ApiResponse(responseCode = "200", description = "회원 조회 성공", content = @Content(schema = @Schema(implementation = MemberRes.class)))
+    @ApiResponse(responseCode = "404", description = "존재하지 않는 회원", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<MemberRes> getMember(@AuthenticationPrincipal CustomUserDetails user) {
         return ResponseEntity.ok(memberService.getMember(user.getUsername()));
     }
 
     @GetMapping("/all")
+    @Operation(summary = "회원 전체 조회")
+    @ApiResponse(responseCode = "200", description = "회원 전체 조회 성공", content = @Content(schema = @Schema(implementation = MemberRes.class)))
     public ResponseEntity<List<MemberRes>> getMembers() {
         return ResponseEntity.ok(memberService.getMembers());
     }
@@ -71,7 +74,7 @@ public class MemberController {
 
     @PatchMapping("/{nickname}")
     @Operation(summary = "닉네임 수정")
-    @ApiResponse(responseCode = "200", description = "닉네임 수정 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
+    @ApiResponse(responseCode = "200", description = "닉네임 수정 성공", content = @Content(schema = @Schema(implementation = MemberRes.class)))
     @ApiResponse(responseCode = "404", description = "존재하지 않는 회원", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     public ResponseEntity<MemberRes> patchNickname(@AuthenticationPrincipal CustomUserDetails user, @PathVariable String nickname) {
         return ResponseEntity.ok(memberService.updateNickname(user.getUsername(), nickname));

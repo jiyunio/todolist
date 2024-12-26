@@ -73,7 +73,9 @@ public class MemberService {
     }
 
     public MemberRes getMember(String userId) {
-        Member member = memberRepository.findByUserId(userId).get();
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
+        );
         return MemberRes.builder()
                 .memberId(member.getId())
                 .userId(member.getUserId())

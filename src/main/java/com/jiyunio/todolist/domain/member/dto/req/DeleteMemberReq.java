@@ -9,6 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Schema(description = "회원 탈퇴")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeleteMemberReq {
     @NotBlank(message = "아이디를 입력하세요.")
