@@ -1,13 +1,13 @@
 package com.jiyunio.todolist.domain.member;
 
 import com.jiyunio.todolist.domain.member.dto.req.ChangePwReq;
+import com.jiyunio.todolist.domain.member.dto.req.DeleteMemberReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignInReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignUpReq;
 import com.jiyunio.todolist.domain.member.dto.res.MemberRes;
 import com.jiyunio.todolist.domain.member.dto.res.SignInRes;
 import com.jiyunio.todolist.global.customError.ErrorDTO;
 import com.jiyunio.todolist.global.jwt.CustomUserDetails;
-import com.jiyunio.todolist.global.jwt.JwtDTO;
 import com.jiyunio.todolist.global.responseDTO.ResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -81,8 +81,8 @@ public class MemberController {
     @Operation(summary = "회원 탈퇴")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
     @ApiResponse(responseCode = "404", description = "존재하지 않는 회원", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user) {
-        memberService.deleteMember(user.getUsername());
+    public ResponseEntity<ResponseDTO> deleteMember(@AuthenticationPrincipal CustomUserDetails user, @Valid @RequestBody DeleteMemberReq deleteMemberReq) {
+        memberService.deleteMember(user.getUsername(), deleteMemberReq);
         return ResponseEntity.ok(ResponseDTO.builder()
                 .msg("회원 탈퇴 성공")
                 .build());

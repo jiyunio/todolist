@@ -2,6 +2,7 @@ package com.jiyunio.todolist.domain.member;
 
 import com.jiyunio.todolist.domain.category.CategoryService;
 import com.jiyunio.todolist.domain.member.dto.req.ChangePwReq;
+import com.jiyunio.todolist.domain.member.dto.req.DeleteMemberReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignInReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignUpReq;
 import com.jiyunio.todolist.domain.member.dto.res.MemberRes;
@@ -107,7 +108,7 @@ public class MemberService {
             }
         } else {
             // 회원의 비밀번호와 불일치
-            throw new CustomException(HttpStatus.UNAUTHORIZED, ErrorCode.WRONG_USERID_PASSWORD);
+            throw new CustomException(HttpStatus.UNAUTHORIZED, ErrorCode.WRONG_PASSWORD);
         }
     }
 
@@ -124,10 +125,13 @@ public class MemberService {
                 .build();
     }
 
-    public void deleteMember(String userId) {
+    public void deleteMember(String userId, DeleteMemberReq deleteMemberReq) {
         Member member = memberRepository.findByUserId(userId).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
+        if(!member.getUserId().equals(deleteMemberReq.getUserId())) throw new CustomException(HttpStatus.UNAUTHORIZED , ErrorCode.WRONG_USERID);
+        if(!passwordEncoder.matches(deleteMemberReq.getUserPw(), member.getUserPw())) throw new CustomException(HttpStatus.UNAUTHORIZED, ErrorCode.WRONG_PASSWORD);
+
         todoService.deleteAllTodo(userId);
         categoryService.deleteCategories(userId);
         memberRepository.deleteById(member.getId());
