@@ -71,7 +71,7 @@ public class MemberService {
         String token = jwtProvider.createToken(authentication);
 
         return SignInRes.builder()
-                .userId(memberRepository.findByUserId(signInReq.getUserId()).get().getNickname())
+                .nickname(memberRepository.findByUserId(signInReq.getUserId()).get().getNickname())
                 .token(token)
                 .build();
     }

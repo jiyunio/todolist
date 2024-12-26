@@ -11,7 +11,7 @@ import lombok.*;
 public class SignInRes {
     @NotBlank
     @Schema(description = "회원의 userId", example = "qwe123")
-    private String userId;
+    private String nickname;
 
     @NotBlank
     @Schema(description = "회원의 token")
