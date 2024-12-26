@@ -59,8 +59,8 @@ public class TodoController {
     @PutMapping("/{todoId}")
     @Operation(summary = "todo 수정")
     @ApiResponse(responseCode = "200", description = "todo 수정 성공", content = @Content(schema = @Schema(implementation = TodoRes.class)))
-    public ResponseEntity<TodoRes> updateTodo(@Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoReq updateTodo) {
-        return ResponseEntity.ok(todoService.updateTodo(todoId, updateTodo));
+    public ResponseEntity<TodoRes> updateTodo(@AuthenticationPrincipal CustomUserDetails user, @Parameter(description = "todo의 id") @PathVariable Long todoId, @Valid @RequestBody UpdateTodoReq updateTodo) {
+        return ResponseEntity.ok(todoService.updateTodo(user.getUsername(), todoId, updateTodo));
     }
 
     @DeleteMapping("/{todoId}")

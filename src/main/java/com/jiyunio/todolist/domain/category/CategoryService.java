@@ -79,8 +79,8 @@ public class CategoryService {
     }
 
     public void deleteCategory(String userId, Long categoryId) {
-        if (categoryRepository.count() == 1) {
-            //카데고리 개수 >= 1
+        if (categoryRepository.count() == 0) {
+            //카데고리 개수 == 0
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NO_ANYMORE_CATEGORY);
         }
         // 카테고리 삭제시, 관련 todo도 함께 삭제

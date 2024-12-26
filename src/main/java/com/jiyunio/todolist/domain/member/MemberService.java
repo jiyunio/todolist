@@ -1,7 +1,6 @@
 package com.jiyunio.todolist.domain.member;
 
 import com.jiyunio.todolist.domain.category.CategoryService;
-import com.jiyunio.todolist.domain.category.dto.CategoryReq;
 import com.jiyunio.todolist.domain.member.dto.req.ChangePwReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignInReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignUpReq;
@@ -40,29 +39,25 @@ public class MemberService {
             throw new CustomException(HttpStatus.CONFLICT, ErrorCode.EXIST_USERID);
         }
 
-        if (signUpReq.getUserPw().equals(signUpReq.getConfirmUserPw())) {
-            // 회원가입 성공
-            Member member = Member.builder()
-                    .userId(signUpReq.getUserId())
-                    .userPw(passwordEncoder.encode(signUpReq.getUserPw()))
-                    .nickname(signUpReq.getNickname())
-                    .build();
-
-            memberRepository.save(member);
-
-            //기본 카테고리 동시에 생성
-            categoryService.createCategory(member.getUserId(), CategoryReq.builder()
-                    .content("기본")
-                    .color("FFFFFF").build());
-
-            return MemberRes.builder()
-                    .memberId(member.getId())
-                    .userId(member.getUserId())
-                    .nickname(member.getNickname())
-                    .build();
+        if (!signUpReq.getUserPw().equals(signUpReq.getConfirmUserPw())) {
+            // 비밀번호 불일치
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
         }
-        // 비밀번호 불일치
-        throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
+
+        // 회원가입 성공
+        Member member = Member.builder()
+                .userId(signUpReq.getUserId())
+                .userPw(passwordEncoder.encode(signUpReq.getUserPw()))
+                .nickname(signUpReq.getNickname())
+                .build();
+
+        memberRepository.save(member);
+
+        return MemberRes.builder()
+                .memberId(member.getId())
+                .userId(member.getUserId())
+                .nickname(member.getNickname())
+                .build();
     }
 
     public SignInRes signIn(@Valid SignInReq signInReq) {

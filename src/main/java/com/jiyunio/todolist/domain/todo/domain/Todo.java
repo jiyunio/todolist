@@ -41,9 +41,10 @@ public class Todo {
         this.todoListId = todoListId;
     }
 
-    public void updateTodo(UpdateTodoReq updateTodoReq) {
+    public void updateTodo(UpdateTodoReq updateTodoReq, Long todoListId) {
         this.content = updateTodoReq.getContent();
         this.checked = updateTodoReq.getChecked();
+        this.todoListId = todoListId;
     }
 
     public void updateCategory(CategoryRes categoryDTO) {

@@ -23,5 +23,4 @@ public interface TodoListRepository extends JpaRepository<TodoList, Long> {
 
     @Query("select count(tl) > 0 from TodoList tl where tl.userId = :userId and tl.todoListDate = :todoListDate")
     boolean existsByUserIdAndTodoListDate(@Param("userId") String userId, @Param("todoListDate") LocalDate todoListDate);
-
 }

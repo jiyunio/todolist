@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TodoService {
     private final MemberRepository memberRepository;
     private final TodoRepository todoRepository;
@@ -41,9 +43,7 @@ public class TodoService {
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_CATEGORY)
         );
 
-        TodoList todoList = todoListRepository.findByUserIdAndTodoListDate(member.getUserId(), createTodo.getSetDate()).orElseThrow(
-                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST)
-        );
+        TodoList todoList = makeTodoList(member, createTodo.getSetDate());
 
         Todo todo = Todo.builder()
                 .content(createTodo.getContent())
@@ -92,20 +92,54 @@ public class TodoService {
         ).toList();
     }
 
-    public TodoRes updateTodo(Long todoId, UpdateTodoReq updateTodo) {
+    public TodoRes updateTodo(String userId, Long todoId, UpdateTodoReq updateTodo) {
+        Member member = memberRepository.findByUserId(userId).orElseThrow(
+                // 회원 존재 안함
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
+        );
+
         Todo todo = todoRepository.findById(todoId).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODO)
 
         );
-        Category category = categoryRepository.findById(updateTodo.getCategoryId()).get();
-        todo.updateTodo(updateTodo);
+
+        TodoList todoList = makeTodoList(member, updateTodo.getSetDate());
+
+        Category category = categoryRepository.findById(updateTodo.getCategoryId()).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_CATEGORY)
+        );
+
+        Long pastTodoListId = todo.getTodoListId();
+
+        todo.updateTodo(updateTodo, todoList.getId());
         todo.updateCategory(CategoryRes.builder()
                 .categoryId(category.getId())
                 .color(category.getColor())
                 .content(category.getContent())
                 .build());
 
+        //todo의 옮김으로 todolist 비었는지 확인
+        checkEmptyTodoList(pastTodoListId);
+
         return TodoRes.from(todo);
+    }
+
+    private TodoList makeTodoList(Member member, LocalDate setDate) {
+        if (!todoListRepository.existsByUserIdAndTodoListDate(member.getUserId(), setDate) && !LocalDate.now().isEqual(setDate)) {
+            // 현재가 아니거나 만들어진 todolist가 없음
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST);
+        }
+
+        return todoListRepository.findByUserIdAndTodoListDate(member.getUserId(), setDate).orElseGet(
+                () -> {
+                    // 현재는 자동으로 todolist 만들어줌
+                    TodoList nowTodoList = TodoList.builder()
+                            .userId(member.getUserId())
+                            .todoListDate(setDate)
+                            .build();
+                    return todoListRepository.save(nowTodoList);
+                }
+        );
     }
 
     public void updateCategory(CategoryRes categoryDTO) {
@@ -125,11 +159,17 @@ public class TodoService {
     }
 
     public void deleteTodoList(Long todoListId) {
+        todoRepository.deleteAllByTodoListId(todoListId);
         todoListRepository.deleteById(todoListId);
     }
 
+    // 회원 탈퇴시 모든 투두 삭제 메소드
     public void deleteAllTodo(String userId) {
         todoListRepository.deleteAllByUserId(userId);
     }
 
+    public void checkEmptyTodoList(Long todoListId) {
+        List<Todo> todos = todoRepository.findAllByTodoListId(todoListId);
+        if (todos.isEmpty()) todoListRepository.deleteById(todoListId);
+    }
 }
