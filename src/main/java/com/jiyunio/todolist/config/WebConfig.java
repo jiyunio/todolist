@@ -7,7 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-    private String port = "5173";
+    @Value("${web.port}")
+    private String port;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
