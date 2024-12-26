@@ -12,13 +12,13 @@ import lombok.*;
 public class CategoryRes {
     @NotNull
     @Schema(description = "category Id", example = "1")
-    private Long categoryId;
+    private final Long categoryId;
 
     @NotBlank
     @Schema(description = "category 내용", example = "약속")
-    private String content;
+    private final String content;
 
     @NotBlank
     @Schema(description = "category 색깔 (# 제외)", example = "FFFFFF")
-    private String color;
+    private final String color;
 }

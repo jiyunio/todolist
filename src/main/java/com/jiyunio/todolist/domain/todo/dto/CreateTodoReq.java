@@ -9,20 +9,19 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Schema(description = "todo 생성 : todo checked 기본 값 False")
 public class CreateTodoReq {
     @NotBlank(message = "todo를 작성해주세요.")
     @Schema(description = "todo 내용", example = "친구랑 치킨집")
-    private String content;
+    private final String content;
 
     @NotNull
     @Schema(description = "category Id", example = "1")
-    private Long categoryId;
+    private final Long categoryId;
 
     @NotNull(message = "설정 일자를 선택해주세요.")
     @Schema(description = "todo 설정 일자", example = "YYYY-MM-DD")
-    private LocalDate setDate;
+    private final LocalDate setDate;
 
 }

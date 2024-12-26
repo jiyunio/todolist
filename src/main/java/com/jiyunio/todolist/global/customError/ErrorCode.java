@@ -20,7 +20,8 @@ public enum ErrorCode {
 
     // 409 Conflict (중복된 값)
     EXIST_USERID("409_Conflict", "이미 존재하는 아이디입니다."),
-    EXIST_EMAIL("409_Conflict", "이미 존재하는 이메일입니다.");
+    EXIST_EMAIL("409_Conflict", "이미 존재하는 이메일입니다."),
+    EXIST_TODOLIST("409_Conflict", "이미 존재하는 todo list입니다.");
 
     private final String code;
     private final String message;

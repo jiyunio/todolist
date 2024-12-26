@@ -28,14 +28,17 @@ public class Todo {
 
     private String categoryContent;
 
+    private Long todoListId;
+
     @Builder
     private Todo(String content, Boolean checked,
-                   Long categoryId, String categoryContent, String categoryColor) {
+                 Long categoryId, String categoryContent, String categoryColor, Long todoListId) {
         this.content = content;
         this.checked = checked;
         this.categoryId = categoryId;
         this.categoryContent = categoryContent;
         this.categoryColor = categoryColor;
+        this.todoListId = todoListId;
     }
 
     public void updateTodo(UpdateTodoReq updateTodoReq) {

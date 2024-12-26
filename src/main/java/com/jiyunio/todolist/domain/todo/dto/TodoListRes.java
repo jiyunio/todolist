@@ -1,5 +1,6 @@
 package com.jiyunio.todolist.domain.todo.dto;
 
+import com.jiyunio.todolist.domain.todo.domain.Todo;
 import com.jiyunio.todolist.domain.todo.domain.TodoList;
 import lombok.*;
 
@@ -11,19 +12,17 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoListRes {
-    private Long todoListId;
+    private final Long todoListId;
 
-    private LocalDate todoListDate;
+    private final LocalDate todoListDate;
 
-    private boolean isToday;
+    private final List<TodoRes> todoRes;
 
-    private List<TodoRes> todoRes;
-
-    public static TodoListRes from(TodoList todoList) {
+    public static TodoListRes from(TodoList todoList, List<Todo> todos) {
         return TodoListRes.builder()
                 .todoListId(todoList.getId())
                 .todoListDate(todoList.getTodoListDate())
-                .todoRes(todoList.getTodos().stream().map(TodoRes::from).toList())
+                .todoRes(todos.stream().map(TodoRes::from).toList())
                 .build();
     }
 }

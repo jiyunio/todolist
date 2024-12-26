@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -15,19 +13,16 @@ import java.util.List;
 public class TodoList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "todo_list_id")
     private Long id;
 
     private String userId;
 
     private LocalDate todoListDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Todo> todos = new ArrayList<>();
-
     @Builder
-    private TodoList(LocalDate todoListDate, String userId, List<Todo> todos) {
+    private TodoList(LocalDate todoListDate, String userId) {
         this.todoListDate = todoListDate;
         this.userId = userId;
-        this.todos = todos;
     }
 }

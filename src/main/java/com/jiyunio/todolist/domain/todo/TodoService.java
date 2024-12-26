@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @Service
@@ -42,21 +41,20 @@ public class TodoService {
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_CATEGORY)
         );
 
+        TodoList todoList = todoListRepository.findByUserIdAndTodoListDate(member.getUserId(), createTodo.getSetDate()).orElseThrow(
+                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST)
+        );
+
         Todo todo = Todo.builder()
                 .content(createTodo.getContent())
                 .checked(false)
                 .categoryId(category.getId())
                 .categoryContent(category.getContent())
                 .categoryColor(category.getColor())
+                .todoListId(todoList.getId())
                 .build();
 
         todoRepository.save(todo);
-
-        TodoList todoList = todoListRepository.findByUserIdAndTodoListDate(member.getUserId(), createTodo.getSetDate()).orElseThrow(
-                () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST)
-        );
-
-        todoList.getTodos().add(todo);
 
         return TodoRes.from(todo);
     }
@@ -66,25 +64,32 @@ public class TodoService {
                 // 회원 존재 안함
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER)
         );
+        log.warn(userId, todoListDate);
+        if (todoListRepository.existsByUserIdAndTodoListDate(userId, todoListDate)) {
+            throw new CustomException(HttpStatus.CONFLICT, ErrorCode.EXIST_TODOLIST);
+        }
 
         TodoList todoList = TodoList.builder()
                 .userId(member.getUserId())
                 .todoListDate(todoListDate)
-                .todos(new ArrayList<>())
                 .build();
-
         todoListRepository.save(todoList);
-        return TodoListRes.from(todoList);
+
+        return TodoListRes.from(todoList, new ArrayList<>());
     }
 
     public List<TodoListRes> getTodos(String userId) {
         List<TodoList> todoList = todoListRepository.findAllByUserId(userId);
-        if (todoList == null) {
-            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_MEMBER);
+        if (todoList.isEmpty()) {
+            throw new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST);
         }
 
-        return new ArrayList<>(todoList.stream()
-                .map(TodoListRes::from).toList());
+        return todoList.stream().map(
+                list -> {
+                    List<Todo> todos = todoRepository.findAllByTodoListId(list.getId());
+                    return TodoListRes.from(list, todos);
+                }
+        ).toList();
     }
 
     public TodoRes updateTodo(Long todoId, UpdateTodoReq updateTodo) {

@@ -5,11 +5,8 @@ import com.jiyunio.todolist.domain.category.dto.CategoryRes;
 import com.jiyunio.todolist.domain.member.Member;
 import com.jiyunio.todolist.domain.member.MemberRepository;
 import com.jiyunio.todolist.domain.todo.TodoListRepository;
-import com.jiyunio.todolist.domain.todo.TodoRepository;
 import com.jiyunio.todolist.domain.todo.TodoService;
 import com.jiyunio.todolist.domain.todo.domain.TodoList;
-import com.jiyunio.todolist.domain.todo.dto.TodoListRes;
-import com.jiyunio.todolist.domain.todo.dto.TodoRes;
 import com.jiyunio.todolist.global.customError.CustomException;
 import com.jiyunio.todolist.global.customError.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +84,7 @@ public class CategoryService {
             throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NO_ANYMORE_CATEGORY);
         }
         // 카테고리 삭제시, 관련 todo도 함께 삭제
-        List<TodoList> todoList = todoListRepository.findAllByUserIdANDCategoryId(userId, categoryId);
+        List<TodoList> todoList = todoListRepository.findAllByUserIdAndCategoryId(userId, categoryId);
         todoListRepository.deleteAll(todoList);
         categoryRepository.deleteById(categoryId);
     }

@@ -43,8 +43,8 @@ public class TodoController {
     @Operation(summary = "todolist 생성")
     @ApiResponse(responseCode = "200", description = "todo 생성 성공", content = @Content(schema = @Schema(implementation = TodoRes.class)))
     @ApiResponse(responseCode = "404", description = "회원 X", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<TodoListRes> createTodo(@AuthenticationPrincipal CustomUserDetails user, LocalDate localDate) {
-        return new ResponseEntity<>(todoService.createTodoList(user.getUsername(), localDate), HttpStatus.CREATED);
+    public ResponseEntity<TodoListRes> createTodo(@AuthenticationPrincipal CustomUserDetails user, @RequestParam LocalDate todoListDate) {
+        return new ResponseEntity<>(todoService.createTodoList(user.getUsername(), todoListDate), HttpStatus.CREATED);
     }
 
     @GetMapping("")
@@ -73,7 +73,7 @@ public class TodoController {
                 .build());
     }
 
-    @DeleteMapping("/{todoListId}")
+    @DeleteMapping("/list/{todoListId}")
     @Operation(summary = "todo list 삭제")
     @ApiResponse(responseCode = "200", description = "todo list 삭제 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
     public ResponseEntity<ResponseDTO> deleteTodoList(@Parameter(description = "todo의 id") @PathVariable Long todoListId) {
