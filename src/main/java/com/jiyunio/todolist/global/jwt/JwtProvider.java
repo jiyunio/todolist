@@ -32,7 +32,7 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
     }
 
-    public JwtDTO createToken(Authentication authentication) {
+    public String createToken(Authentication authentication) {
         Date now = new Date();
         String authority = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -48,7 +48,7 @@ public class JwtProvider {
                 .signWith(getSecretKey())
                 .compact();
 
-        return new JwtDTO(accessToken);
+        return accessToken;
     }
 
     //SecurityContext에 인증된 클라이언트의 Authentication를 저장하기 위해 사용됨

@@ -23,7 +23,6 @@ public class TodoListRes {
         return TodoListRes.builder()
                 .todoListId(todoList.getId())
                 .todoListDate(todoList.getTodoListDate())
-                .isToday(todoList.isToday())
                 .todoRes(todoList.getTodos().stream().map(TodoRes::from).toList())
                 .build();
     }

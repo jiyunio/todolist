@@ -14,6 +14,7 @@ import com.jiyunio.todolist.domain.todo.dto.UpdateTodoReq;
 import com.jiyunio.todolist.global.customError.CustomException;
 import com.jiyunio.todolist.global.customError.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TodoService {
@@ -48,6 +50,7 @@ public class TodoService {
                 .categoryColor(category.getColor())
                 .build();
 
+        todoRepository.save(todo);
 
         TodoList todoList = todoListRepository.findByUserIdAndTodoListDate(member.getUserId(), createTodo.getSetDate()).orElseThrow(
                 () -> new CustomException(HttpStatus.NOT_FOUND, ErrorCode.NOT_EXIST_TODOLIST)
@@ -67,7 +70,6 @@ public class TodoService {
         TodoList todoList = TodoList.builder()
                 .userId(member.getUserId())
                 .todoListDate(todoListDate)
-                .isToday(checkToday(todoListDate))
                 .todos(new ArrayList<>())
                 .build();
 
@@ -125,8 +127,4 @@ public class TodoService {
         todoListRepository.deleteAllByUserId(userId);
     }
 
-    public boolean checkToday(LocalDate localDate) {
-        LocalDate today = LocalDate.now();
-        return Objects.equals(today, localDate);
-    }
 }

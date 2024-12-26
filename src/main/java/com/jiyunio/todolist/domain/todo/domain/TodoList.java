@@ -21,16 +21,13 @@ public class TodoList {
 
     private LocalDate todoListDate;
 
-    private boolean isToday;
-
     @OneToMany(cascade = CascadeType.ALL)
     private List<Todo> todos = new ArrayList<>();
 
     @Builder
-    private TodoList(LocalDate todoListDate, String userId, boolean isToday, List<Todo> todos) {
+    private TodoList(LocalDate todoListDate, String userId, List<Todo> todos) {
         this.todoListDate = todoListDate;
         this.userId = userId;
-        this.isToday = isToday;
         this.todos = todos;
     }
 }

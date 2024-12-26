@@ -4,6 +4,7 @@ import com.jiyunio.todolist.domain.member.dto.req.ChangePwReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignInReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignUpReq;
 import com.jiyunio.todolist.domain.member.dto.res.MemberRes;
+import com.jiyunio.todolist.domain.member.dto.res.SignInRes;
 import com.jiyunio.todolist.global.customError.ErrorDTO;
 import com.jiyunio.todolist.global.jwt.CustomUserDetails;
 import com.jiyunio.todolist.global.jwt.JwtDTO;
@@ -43,7 +44,7 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "로그인 성공", content = @Content(schema = @Schema(implementation = MemberRes.class)))
     @ApiResponse(responseCode = "400", description = "빈칸", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     @ApiResponse(responseCode = "401", description = "회원 및 비밀번호 불일치", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    public ResponseEntity<JwtDTO> signIn(@Valid @RequestBody SignInReq signInReq) {
+    public ResponseEntity<SignInRes> signIn(@Valid @RequestBody SignInReq signInReq) {
         return ResponseEntity.ok(memberService.signIn(signInReq));
     }
 

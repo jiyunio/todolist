@@ -6,11 +6,11 @@ import com.jiyunio.todolist.domain.member.dto.req.ChangePwReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignInReq;
 import com.jiyunio.todolist.domain.member.dto.req.SignUpReq;
 import com.jiyunio.todolist.domain.member.dto.res.MemberRes;
+import com.jiyunio.todolist.domain.member.dto.res.SignInRes;
 import com.jiyunio.todolist.domain.todo.TodoService;
 import com.jiyunio.todolist.global.customError.CustomException;
 import com.jiyunio.todolist.global.customError.ErrorCode;
 import com.jiyunio.todolist.global.jwt.CustomAuthenticationProvider;
-import com.jiyunio.todolist.global.jwt.JwtDTO;
 import com.jiyunio.todolist.global.jwt.JwtProvider;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,10 +65,15 @@ public class MemberService {
         throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.NOT_SAME_CONFIRM_PASSWORD);
     }
 
-    public JwtDTO signIn(@Valid SignInReq signInReq) {
+    public SignInRes signIn(@Valid SignInReq signInReq) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(signInReq.getUserId(), signInReq.getUserPw());
         Authentication authentication = authenticationProvider.authenticate(authenticationToken);
-        return jwtProvider.createToken(authentication);
+        String token = jwtProvider.createToken(authentication);
+
+        return SignInRes.builder()
+                .userId(memberRepository.findByUserId(signInReq.getUserId()).get().getNickname())
+                .token(token)
+                .build();
     }
 
     public MemberRes getMember(String userId) {

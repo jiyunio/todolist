@@ -72,4 +72,14 @@ public class TodoController {
                 .msg("todo 삭제 성공")
                 .build());
     }
+
+    @DeleteMapping("/{todoListId}")
+    @Operation(summary = "todo list 삭제")
+    @ApiResponse(responseCode = "200", description = "todo list 삭제 성공", content = @Content(schema = @Schema(implementation = ResponseDTO.class)))
+    public ResponseEntity<ResponseDTO> deleteTodoList(@Parameter(description = "todo의 id") @PathVariable Long todoListId) {
+        todoService.deleteTodoList(todoListId);
+        return ResponseEntity.ok(ResponseDTO.builder()
+                .msg("todolist 삭제 성공")
+                .build());
+    }
 }
